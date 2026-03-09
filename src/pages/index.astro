@@ -1,0 +1,126 @@
+---
+import Main from "../layouts/Main.astro";
+import { AppConfig } from "../config/AppConfig";
+import SocialLinks from "../components/shared/SocialLinks.astro";
+import HomePageBlogSection from "../components/home/HomePageBlogSection.astro";
+import MultilingualGreeting from "../components/home/MultilingualGreeting.astro";
+import homeData from "../content/home-data.json";
+import projects from "../content/projects.json";
+import { clsx } from 'clsx';
+
+const { overview, interests } = homeData;
+
+const colorMap: Record<string, string> = {
+  emerald: "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]",
+  cyan: "bg-cyan-500 shadow-[0_0_8px_rgba(6,182,212,0.5)]",
+  amber: "bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]",
+  indigo: "bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.5)]",
+  rose: "bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.5)]",
+  sky: "bg-sky-500 shadow-[0_0_8px_rgba(14,165,233,0.5)]",
+};
+---
+
+<Main
+  meta={{
+    title: `${AppConfig.title} | ${AppConfig.headline}`,
+    description: AppConfig.description,
+  }}
+>
+  <div class="relative">
+    <div class="space-y-16 pt-4">
+    <header class="flex flex-col-reverse items-start gap-8 md:flex-row md:items-center md:justify-between">
+      <div class="space-y-3 max-w-xl">
+        <MultilingualGreeting />
+        <h1 class="font-mono text-2xl font-bold tracking-tighter text-zinc-900 dark:text-zinc-100 sm:text-3xl">
+          {AppConfig.title}
+        </h1>
+        <p class="text-base text-zinc-500 dark:text-zinc-400">
+          {AppConfig.description}
+        </p>
+      </div>
+      <div class="relative inline-block hover:scale-105 transition-transform duration-300">
+        <img
+          src="/profile_picture.png"
+          width={120}
+          height={120}
+          class="size-20 bg-zinc-100 object-cover dark:bg-zinc-800 rounded-xl"
+          alt="Profile Picture"
+        />
+        <div class="absolute inset-0 ring-1 ring-inset ring-black/10 dark:ring-white/10 rounded-xl"></div>
+      </div>
+    </header>
+
+    <div class="space-y-6 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400 max-w-xl">
+      <div id="section-0">
+        <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400 block mb-1">[0] Overview</span>
+        {overview.map((para: string) => (
+          <p class="mb-4 last:mb-0">
+            {para}
+          </p>
+        ))}
+      </div>
+    </div>
+
+    <section class="space-y-8" id="section-1">
+      <div>
+        <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400 block mb-6">[1] Interests</span>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-10">
+          {interests.map((interest: any) => (
+            <div class="group space-y-2">
+              <div class="flex items-center gap-2 font-mono text-xxs uppercase tracking-widest text-zinc-900 dark:text-zinc-100">
+                <span class={clsx("size-1.5 rounded-full", colorMap[interest.color] || "bg-zinc-500", interest.color === 'emerald' && "animate-pulse")}></span>
+                {interest.title}
+              </div>
+              <p class="text-[11px] font-mono leading-relaxed text-zinc-500 dark:text-zinc-500">
+                {interest.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="section-2">
+       <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400 block mb-4">[2] Writing</span>
+       <HomePageBlogSection />
+    </section>
+
+    <footer class="pt-8 border-t border-zinc-100 dark:border-zinc-900">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+        <SocialLinks />
+        <a 
+          href="https://cal.com/itzmedhanu/30min" 
+          target="_blank" 
+          class="text-sm font-medium text-emerald-500 hover:text-emerald-400 underline underline-offset-4 transition-colors"
+        >
+          wants to talk something? Let's Connect a call
+        </a>
+      </div>
+      
+      <div class="mt-12 space-y-6">
+        <div id="section-3">
+          <p class="text-sm text-zinc-600 dark:text-zinc-400 mb-6">
+            Listen to my Tamil Tech Podcast
+          </p>
+          <div class="overflow-hidden rounded-xl bg-transparent">
+            <iframe 
+              data-testid="embed-iframe" 
+              style="border-radius:12px; border: none; background: transparent;" 
+              src="https://open.spotify.com/embed/show/7wNAoRcAzNzEf51JhNH3vo?utm_source=generator&theme=0" 
+              width="100%" 
+              height="152" 
+              frameBorder="0" 
+              allowfullscreen="" 
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+              loading="lazy"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+
+      <p class="mt-12 font-mono text-xxs uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
+        Love Nature · Spread Peace
+      </p>
+    </footer>
+  </div>
+</Main>

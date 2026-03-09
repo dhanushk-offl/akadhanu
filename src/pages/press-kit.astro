@@ -1,0 +1,74 @@
+---
+import PKBiography from "../components/pressKit/PKBiography.astro";
+import PKPhotos from "../components/pressKit/PKPhotos.astro";
+import PKSocialLinks from "../components/pressKit/PKSocialLinks.astro";
+import Title from "../components/ui/Title.astro";
+import { AppConfig } from "../config/AppConfig";
+import Main from "../layouts/Main.astro";
+---
+
+<Main
+  meta={{
+    title: `Press Kit | ${AppConfig.title}`,
+    description: AppConfig.description,
+    image: "/assets/og-images/press-kit.png",
+  }}
+>
+  <div class="space-y-16 pt-2">
+    <header class="space-y-4">
+      <Title title="Press Kit" level={1} className="text-5xl" />
+      <p class="text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl leading-relaxed">
+        Resources for conference organizers, media, and podcasts. Everything you need to introduce Dhanush or feature his work.
+      </p>
+    </header>
+
+    <div class="flex flex-col gap-20">
+      <section id="biography" class="space-y-4">
+        <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400 block mb-2">[01] Biography</span>
+        <PKBiography />
+      </section>
+
+      <section id="topics" class="space-y-6">
+        <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400 block mb-2">[02] Topics & Expertise</span>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="p-6 rounded-lg border border-zinc-100 dark:border-zinc-900 bg-zinc-50/50 dark:bg-zinc-900/50 space-y-3">
+             <h3 class="font-medium text-zinc-900 dark:text-zinc-100">Product Building and SaaS</h3>
+             <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
+               Building scalable applications with high-velocity shipping cycles and developing impactful open-source tools tailored to community and industry needs.
+             </p>
+          </div>
+          <div class="p-6 rounded-lg border border-zinc-100 dark:border-zinc-900 bg-zinc-50/50 dark:bg-zinc-900/50 space-y-3">
+             <h3 class="font-medium text-zinc-900 dark:text-zinc-100">AI Agents & Orchestration</h3>
+             <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
+               Expertise in training and deploying models, implementing neural networks, and mastering image generation patterns within autonomous agentic workflows.
+             </p>
+          </div>
+          <div class="p-6 rounded-lg border border-zinc-100 dark:border-zinc-900 bg-zinc-50/50 dark:bg-zinc-900/50 space-y-3">
+             <h3 class="font-medium text-zinc-900 dark:text-zinc-100">HPC & System Architecture</h3>
+             <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
+               Focusing on high-performance computing, resource thresholds, and system optimizations for GPU-intensive AI operations and emerging infrastructures.
+             </p>
+          </div>
+          <div class="p-6 rounded-lg border border-zinc-100 dark:border-zinc-900 bg-zinc-50/50 dark:bg-zinc-900/50 space-y-3">
+             <h3 class="font-medium text-zinc-900 dark:text-zinc-100">The Human Side of Engineering</h3>
+             <p class="text-sm text-zinc-500 dark:text-zinc-400 leading-relaxed">
+               Curiosity as a skill, the importance of good design in technical products, and scaling yourself as an entrepreneur.
+             </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="photos" class="space-y-4">
+        <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400 block mb-2">[03] Visual Assets</span>
+        <PKPhotos />
+      </section>
+
+      <section id="social-links" class="space-y-4">
+        <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400 block mb-2">[04] Connect</span>
+        <div class="p-6 rounded-lg border border-zinc-100 dark:border-zinc-900 bg-zinc-50/50 dark:bg-zinc-900/50">
+          <PKSocialLinks />
+        </div>
+      </section> 
+    </div>
+  </div>
+</Main>

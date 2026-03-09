@@ -1,0 +1,74 @@
+---
+import { Image } from "astro:assets";
+
+interface Props {
+  tool: {
+    name: string;
+    description: string;
+    url: string;
+    icon?: string;
+  };
+  index: number;
+  groupIndex: number;
+}
+
+const { tool, index, groupIndex } = Astro.props;
+
+const isAssetURL = (url: string) => {
+  return url.startsWith('https://') || url.startsWith('/');
+}
+
+// Generate a nerdy ID based on group and index
+const toolId = `0x${((groupIndex + 1) * 100 + (index + 1)).toString(16).toUpperCase().padStart(3, '0')}`;
+---
+
+<div class="group relative p-4 rounded-lg border border-zinc-900 hover:border-zinc-700 transition-all overflow-hidden flex flex-col justify-between min-h-[140px] bg-zinc-900/50">
+  <!-- Nerdy Background Glow -->
+  <span class="absolute inset-0 bg-zinc-800/50 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out -z-10"></span>
+
+  <div class="relative z-10 flex flex-col h-full space-y-4">
+    <div class="flex items-start justify-between">
+      <div class="flex items-center space-x-3">
+        {!!(tool.icon && isAssetURL(tool.icon)) && (
+          <div class="p-1.5 rounded bg-zinc-800 shadow-sm ring-1 ring-zinc-700">
+            <Image
+              src={tool.icon}
+              width={20}
+              height={20}
+              alt={tool.name}
+              class="h-5 w-5 object-contain"
+              loading="lazy"
+            />
+          </div>
+        )}
+        {!!(tool.icon && !isAssetURL(tool.icon)) && (
+          <span class="text-xl leading-none grayscale group-hover:grayscale-0 transition-all">{tool.icon}</span>
+        )}
+        
+        <div>
+          <h3 class="text-sm font-bold text-zinc-100 group-hover:underline decoration-1 underline-offset-4">
+            {tool.name}
+          </h3>
+          <span class="font-mono text-[10px] text-zinc-600">[{toolId}]</span>
+        </div>
+      </div>
+
+      <div class="flex flex-col items-end">
+        <span class="font-mono text-[9px] px-1.5 py-0.5 rounded border border-emerald-500/20 text-emerald-400 bg-emerald-500/5 uppercase tracking-tighter">
+          Ready
+        </span>
+      </div>
+    </div>
+
+    <p class="text-[11px] font-mono leading-relaxed text-zinc-500 line-clamp-2">
+      {tool.description}
+    </p>
+
+    <div class="pt-2 flex items-center justify-between">
+      <a href={tool.url} target="_blank" class="font-mono text-xxxs uppercase tracking-widest text-zinc-400 hover:text-zinc-100 transition-colors flex items-center gap-1 group/link">
+        Access_Point
+        <span class="opacity-0 group-hover/link:opacity-100 transition-opacity animate-pulse">_</span>
+      </a>
+    </div>
+  </div>
+</div>

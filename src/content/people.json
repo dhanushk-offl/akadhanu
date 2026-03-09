@@ -1,0 +1,50 @@
+[
+    {
+        "name": "Sathya Gunasekaran",
+        "met": true
+    },
+    {
+        "name": "Abirami Sukumaran",
+        "met": true
+    },
+    {
+        "name": "Bhavani Ravi",
+        "met": true
+    },
+    {
+        "name": "Aishwarya Ashok",
+        "met": true
+    },
+    {
+        "name": "Sanjeev NC",
+        "met": true
+    },
+    {
+        "name": "Aravind Sekar",
+        "met": true
+    },
+    {
+        "name": "Aravind Srinivas",
+        "met": false
+    },
+    {
+        "name": "Vishnu Mohandas",
+        "met": false
+    },
+    {
+        "name": "Amit Jain",
+        "met": false
+    },
+    {
+        "name": "Kennet Alphy",
+        "met": false
+    },
+    {
+        "name": "Kunal Shah",
+        "met": false
+    },
+    {
+        "name": "Nikhil Kamath",
+        "met": false
+    }
+]

@@ -1,0 +1,61 @@
+---
+import { format } from 'date-fns';
+
+interface Props {
+  post: {
+    title: string;
+    link: string;
+    slug: string;
+    pubDate: string;
+    contentSnippet?: string;
+    categories?: string[];
+  };
+  index: number;
+}
+
+const { post, index } = Astro.props;
+const pubDate = new Date(post.pubDate);
+const hexId = `0x${(index + 1).toString(16).toUpperCase().padStart(2, '0')}`;
+---
+
+<a 
+  href={`/blog/${post.slug}`}
+  class="plain group relative block p-4 -mx-4 rounded-lg transition-all hover:bg-zinc-900/50 border border-transparent hover:border-zinc-800 overflow-hidden"
+>
+  <!-- Background selection block -->
+  <span class="absolute inset-0 bg-white/5 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out -z-10"></span>
+
+  <div class="flex flex-col md:flex-row md:items-baseline gap-4">
+    <!-- Hex & Date Column -->
+    <div class="flex items-center gap-4 shrink-0 md:w-40">
+      <span class="font-mono text-xxxs text-zinc-600">[{hexId}]</span>
+      {post.pubDate && (
+        <time
+          datetime={pubDate.toISOString()}
+          class="font-mono text-xxxs uppercase tracking-widest text-zinc-500"
+        >
+          {format(pubDate, 'yyyy-MM-dd')}
+        </time>
+      )}
+    </div>
+
+    <!-- Content Column -->
+    <div class="flex-1 space-y-2">
+      <h2 class="text-base font-bold text-zinc-100 group-hover:text-white transition-colors flex items-center gap-2 !no-underline">
+        {post.title}
+        <span class="opacity-0 group-hover:opacity-100 transition-opacity text-emerald-500 font-mono text-xs hidden md:inline">←</span>
+      </h2>
+      
+      {post.contentSnippet && (
+        <p class="text-[11px] font-mono leading-relaxed text-zinc-500 line-clamp-2">
+          {post.contentSnippet}
+        </p>
+      )}
+      
+      <div class="pt-1 flex items-center gap-4">
+        <span class="font-mono text-xxxs uppercase tracking-widest text-zinc-700">Type: Post</span>
+        <span class="font-mono text-xxxs uppercase tracking-widest text-zinc-700">Status: Published</span>
+      </div>
+    </div>
+  </div>
+</a>

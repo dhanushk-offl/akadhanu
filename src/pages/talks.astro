@@ -1,0 +1,128 @@
+---
+import Main from "../layouts/Main.astro";
+import { AppConfig } from "../config/AppConfig";
+import PageHeader from "../components/PageHeader.astro";
+import talksData from "../content/talks.json";
+import { format } from "date-fns";
+
+const talks = talksData.sort((a, b) => 
+  new Date(b.date).valueOf() - new Date(a.date).valueOf()
+);
+---
+
+<Main
+  meta={{
+    title: `Talks | ${AppConfig.title}`,
+    description: "Public speaking, workshops, and technical presentations.",
+  }}
+>
+  <div class="pb-8 pt-2">
+    <PageHeader
+      title="Talks"
+      emoji="🎤"
+      description="Sharing knowledge through speaking, workshops, and presentations."
+    />
+
+    <div class="mt-12 space-y-12">
+      {talks.map((talk, index) => (
+        <div class="group relative grid grid-cols-1 md:grid-cols-[1.2fr_2fr] gap-8 md:gap-16 p-8 -mx-8 rounded-2xl hover:bg-zinc-900/40 border border-transparent hover:border-zinc-800/50 transition-all duration-500 ease-out">
+          <!-- Left Column: Visual & Meta -->
+          <div class="space-y-6">
+            <div class="aspect-video bg-zinc-950 rounded-xl overflow-hidden border border-zinc-900 group-hover:border-emerald-500/20 transition-colors duration-500 relative flex items-center justify-center shadow-2xl shadow-black/40">
+               {talk.recordingUrl?.includes('youtube.com') || talk.recordingUrl?.includes('youtu.be') ? (
+                 <div class="relative w-full h-full">
+                   <img 
+                    src={`https://img.youtube.com/vi/${talk.recordingUrl.split('/').pop()?.split('?')[0]}/maxresdefault.jpg`} 
+                    alt={talk.title}
+                    class="w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity duration-700"
+                  />
+                  <div class="absolute inset-0 flex items-center justify-center">
+                     <div class="size-14 rounded-full bg-emerald-500/10 backdrop-blur-md border border-emerald-500/30 flex items-center justify-center group-hover:scale-110 group-hover:bg-emerald-500/20 transition-all duration-500">
+                        <span class="text-emerald-500 text-2xl ml-1">▶</span>
+                     </div>
+                  </div>
+                 </div>
+               ) : (
+                 <div class="flex flex-col items-center gap-4 text-zinc-700 group-hover:text-emerald-500/40 transition-colors duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3z"/></svg>
+                    <span class="font-mono text-[8px] uppercase tracking-[0.3em]">No_Video_Feed</span>
+                 </div>
+               )}
+            </div>
+            
+            <div class="flex flex-col gap-3 pl-1">
+               <div class="flex items-center gap-3">
+                  <span class="w-8 h-[1px] bg-zinc-800"></span>
+                  <span class="font-mono text-[10px] uppercase tracking-widest text-emerald-500/70">{talk.eventDate || format(new Date(talk.date), 'MMM dd, yyyy')}</span>
+               </div>
+               <div class="flex flex-col gap-1.5">
+                  <span class="font-mono text-[9px] uppercase tracking-[0.1em] text-zinc-500 leading-tight">
+                    {talk.event}
+                  </span>
+                  <span class="font-mono text-[8px] uppercase tracking-[0.1em] text-zinc-600">
+                    Loc: {talk.location}
+                  </span>
+               </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Content & Actions -->
+          <div class="flex flex-col justify-between py-2">
+            <div class="space-y-6">
+              <div class="space-y-2">
+                <h2 class="text-2xl font-bold text-zinc-100 group-hover:text-white transition-colors duration-300 tracking-tight leading-tight">
+                  {talk.title}
+                </h2>
+                <div class="h-1 w-12 bg-zinc-800 group-hover:w-24 group-hover:bg-emerald-500/30 transition-all duration-500"></div>
+              </div>
+              
+              <p class="text-sm text-zinc-400 leading-relaxed font-mono opacity-80 group-hover:opacity-100 transition-opacity duration-500">
+                {talk.description || "Synthesizing complex technical paradigms into accessible insights for diverse engineering and business audiences."}
+              </p>
+
+              {talk.tags && (
+                <div class="flex flex-wrap gap-2 pt-2">
+                  {talk.tags.map((tag) => (
+                    <span class="px-2 py-0.5 rounded bg-zinc-900/50 border border-zinc-800/50 text-[8px] font-mono text-zinc-500 uppercase tracking-widest group-hover:border-emerald-500/20 group-hover:text-emerald-500/60 transition-colors duration-500">
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+            
+            <div class="pt-10 flex flex-wrap gap-4">
+              {talk.recordingUrl && (
+                <a 
+                  href={talk.recordingUrl} 
+                  target="_blank"
+                  class="group/btn inline-flex items-center gap-3 px-5 py-2.5 bg-zinc-100 text-black rounded-lg font-mono text-xxs uppercase tracking-widest hover:bg-white transition-all duration-300 shadow-xl shadow-white/5 shadow-zinc-200/5 group-active:scale-95"
+                >
+                  Stream_Session
+                </a>
+              )}
+              {talk.slidesUrl && (
+                <a 
+                  href={talk.slidesUrl} 
+                  target="_blank"
+                  class="group/btn inline-flex items-center gap-3 px-5 py-2.5 bg-zinc-900 border border-zinc-800 text-zinc-300 rounded-lg font-mono text-xxs uppercase tracking-widest hover:border-zinc-600 hover:text-white transition-all duration-300 active:scale-95"
+                >
+                  View_Slides
+                </a>
+              )}
+              {talk.eventDetailsUrl && (
+                <a 
+                  href={talk.eventDetailsUrl} 
+                  target="_blank"
+                  class="group/btn inline-flex items-center gap-3 px-5 py-2.5 bg-transparent border border-zinc-800/50 text-zinc-500 rounded-lg font-mono text-xxs uppercase tracking-widest hover:border-emerald-500/30 hover:text-emerald-500 transition-all duration-300 active:scale-95"
+                >
+                  Event_Details
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</Main>

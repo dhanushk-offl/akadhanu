@@ -1,0 +1,72 @@
+[
+    {
+        "title": "LetRetro",
+        "description": "AI Powered Retrospective and Team Feedback Suite for IT Teams.",
+        "link": "https://letretro.com",
+        "tags": [
+            "SaaS",
+            "Product"
+        ],
+        "year": "2025",
+        "logo": "/assets/images/letretro.png"
+    },
+    {
+        "title": "A-spect",
+        "description": "LLM Observatory & Prompt Management Suite for AI Agents Builders",
+        "link": "",
+        "tags": [
+            "SaaS",
+            "Product"
+        ],
+        "year": "2026",
+        "logo": "/assets/images/aspec.png"
+    },
+    {
+        "title": "Clynk",
+        "description": "A Secure, Open-Source Clip Syncronization for Android & PC.",
+        "link": "https://github.com/dhanushk-offl/clynk",
+        "tags": [
+            "Tool",
+            "Android",
+            "Open Source"
+        ],
+        "year": "2026",
+        "logo": "/assets/images/clynk.png"
+    },
+    {
+        "title": "Guro",
+        "description": "A Lightweight System Monitoring and Benchmarking Package Toolkit",
+        "link": "https://github.com/dhanushk-offl/guro",
+        "tags": [
+            "Tool",
+            "Python",
+            "System Monitoring",
+            "Benchmarking"
+        ],
+        "year": "2025",
+        "logo": "/assets/images/guro.png"
+    },
+    {
+        "title": "Hallx",
+        "description": "hallx is a lightweight, model-agnostic hallucination risk engine for LLM outputs.",
+        "link": "https://github.com/dhanushk-offl/hallx",
+        "tags": [
+            "Tool",
+            "Python",
+            "LLM"
+        ],
+        "year": "2026",
+        "logo": "/assets/images/hallx.png"
+    },
+    {
+        "title": "Resume Analyser",
+        "description": "Evaluate resume fitness for job descriptions.",
+        "link": "https://github.com/dhanushk-offl/resume-analyzer",
+        "tags": [
+            "AI",
+            "Career"
+        ],
+        "year": "2024",
+        "logo": "/assets/images/resume-analyzer.png"
+    }
+]

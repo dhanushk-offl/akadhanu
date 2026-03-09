@@ -1,0 +1,116 @@
+[
+  {
+    "title": "Advanced Streaming UI for AI Apps using React/ Next.js",
+    "event": "Chennaireact Meetup",
+    "location": "Chennai, India",
+    "date": "2025-11-29",
+    "eventDate": "Nov 29, 2025",
+    "slidesUrl": "https://www.figma.com/deck/6NXNk0LF7NWG5TNe4bQ03g/UI-Streaming-in-React-for-AI-Apps?node-id=1-36&t=UsdendFds0SkAWyY-1",
+    "recordingUrl": "https://www.youtube.com/live/0NYbRQtaYhs?si=borCzSBv2f8NqKAj&t=3168",
+    "description": "Explored advanced streaming UI techniques for AI applications using React and Next.js, focusing on real-time feedback and performance.",
+    "eventDetailsUrl": "https://luma.com/g6aqpnb2",
+    "tags": [
+      "AI",
+      "React",
+      "Next.js",
+      "Streaming"
+    ]
+  },
+  {
+    "title": "Make Your Idea from 0 to 1 with Open Source – With a Kutti Story",
+    "event": "TOSS Conf. 2025",
+    "location": "Chennai, India",
+    "date": "2025-07-19",
+    "eventDate": "July 19, 2025",
+    "slidesUrl": "https://www.figma.com/deck/ZYg6JJP2ZZX1yuK5SKmFy2/TOSSCONF?node-id=1-35&t=5WQ6Qungzh56nIA3-1",
+    "recordingUrl": "",
+    "description": "A journey through open-source product development, from ideation to launch, told through a personal story.",
+    "eventDetailsUrl": "https://tossconf25.kaniyam.com/",
+    "tags": [
+      "FOSS",
+      "Open Source",
+      "SaaS"
+    ]
+  },
+  {
+    "title": "Democratizing High-Performance Computing with Python: Why It Matters and an Introduction to Guro",
+    "event": "Chennaipy January Meetup",
+    "location": "Chennai, India",
+    "date": "2025-01-25",
+    "eventDate": "Jan 25, 2025",
+    "slidesUrl": "https://www.canva.com/design/DAGcveEiy5g/i3linGPiy1s8G8HIjvs1Rg/view?utm_content=DAGcveEiy5g&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=ha62d314cb0",
+    "recordingUrl": "",
+    "description": "Introduction to HPC concepts and Guro within the Python ecosystem, explaining why decentralized computing is essential.",
+    "eventDetailsUrl": "https://www.linkedin.com/company/chennaipy/",
+    "tags": [
+      "HPC",
+      "Python",
+      "Guro"
+    ]
+  },
+  {
+    "title": "Fundamentals and Development of AI: A Career Guidance Session",
+    "event": "Naan Mudhalvan",
+    "location": "Virtual",
+    "date": "2024-08-15",
+    "eventDate": "Aug 15, 2024",
+    "slidesUrl": "https://www.canva.com/design/DAGADqFtAbI/22acn5V7-jsStHeGNsjmHA/view?utm_content=DAGADqFtAbI&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h9e14be56de",
+    "recordingUrl": "",
+    "description": "Mentoring future developers on the core fundamentals of AI development and career paths in the industry.",
+    "eventDetailsUrl": "https://naanmudhalvan.tn.gov.in/",
+    "tags": [
+      "AI",
+      "Career Guidance",
+      "Development"
+    ]
+  },
+  {
+    "title": "Understanding AI Ethics and Concerns: Using AI Responsibly and Securely",
+    "event": "Naan Mudhalvan TN Skills Submit 2024",
+    "location": "Chennai, India",
+    "date": "2024-03-16",
+    "eventDate": "Mar 16, 2024",
+    "slidesUrl": "",
+    "recordingUrl": "",
+    "description": "A comprehensive overview of AI ethics, focusing on responsible AI usage, privacy concerns, and security measures to ensure safe AI deployment in various sectors.",
+    "eventDetailsUrl": "https://naanmudhalvan.tn.gov.in/",
+    "tags": [
+      "AI",
+      "Ethics",
+      "Privacy",
+      "Security"
+    ]
+  },
+  {
+    "title": "Train Your AI Model with Ease: A Hands-on Workshop",
+    "event": "AI Odyssesy Technoshop - SRM University(AP)",
+    "location": "Amaravati, India",
+    "date": "2023-10-03",
+    "eventDate": "Oct 03, 2023",
+    "slidesUrl": "",
+    "recordingUrl": "",
+    "description": "A practical workshop designed to guide participants through the process of training AI models, covering essential techniques, tools, and best practices for effective model development.",
+    "eventDetailsUrl": "",
+    "tags": [
+      "AI",
+      "Machine Learning",
+      "Business"
+    ]
+  },
+  {
+    "title": "Leverage AI in Business and Management shifting Paradigms",
+    "event": "TechSpark IIITB 2023",
+    "location": "Bengaluru, India",
+    "date": "2023-09-15",
+    "eventDate": "Sept 15, 2023",
+    "slidesUrl": "",
+    "recordingUrl": "",
+    "description": "Exploring the impact of AI on business processes, decision-making, and management strategies, with a focus on real-world applications and case studies.",
+    "eventDetailsUrl": "",
+    "tags": [
+      "AI",
+      "Machine Learning",
+      "LLMs"
+    ]
+  }
+]

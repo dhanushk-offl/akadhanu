@@ -1,0 +1,37 @@
+{
+    "overview": [
+        "I am Dhanush Kandhan aka Dhanu from Bengaluru, India. I am an AI engineer, developer, and technologist focused on AI, ethics, GPUs, and emerging systems, while contributing to tech communities and education initiatives. And I love building things & Hosting a Tamil Tech Podcast Idu Namma Tech-u"
+    ],
+    "interests": [
+        {
+            "title": "Agent Dev",
+            "description": "Exploring LLM orchestration and autonomous agentic workflows to build intelligent tools.",
+            "color": "emerald"
+        },
+        {
+            "title": "Podcast",
+            "description": "Hosting Idunammatechu Tamil podcast, connecting experts and builders through conversations on technology, culture, and ideas.",
+            "color": "cyan"
+        },
+        {
+            "title": "IoT",
+            "description": "Exploring IoT systems like ESP32, Jetson Nano, Raspberry Pi, Arduino, and custom PCB designs for custom experiments.",
+            "color": "amber"
+        },
+        {
+            "title": "Open Source & SaaS",
+            "description": "Contributing to open source projects and building tools & SaaS products for the community & market as well.",
+            "color": "indigo"
+        },
+        {
+            "title": "Art",
+            "description": "Scribling Pen drawings and lil bit of paintings that made my day.",
+            "color": "rose"
+        },
+        {
+            "title": "Exploration",
+            "description": "Adventure travel and nature photography, finding inspiration beyond the digital realm.",
+            "color": "sky"
+        }
+    ]
+}

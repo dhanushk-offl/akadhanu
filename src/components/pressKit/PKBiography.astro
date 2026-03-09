@@ -1,0 +1,158 @@
+---
+import Title from "../ui/Title.astro";
+---
+
+<div class="space-y-6">
+  <div>
+    <Title title="✍️ Biography" level={3} className="text-3xl" id="biography-heading" />
+    <p class="text-zinc-500 dark:text-zinc-400 mt-2">
+      Standard bios in different lengths and perspectives. Use the one that fits your event or publication needs.
+    </p>
+  </div>
+
+  <div class="flex items-center justify-between border-b border-zinc-100 dark:border-zinc-900 pb-4">
+    <div class="flex gap-2">
+      <button 
+        id="first-person-btn" 
+        class="px-3 py-1 font-mono text-xxxs uppercase tracking-widest border border-zinc-900 bg-zinc-900 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-black transition-all rounded"
+        data-view="first"
+      >
+        First Person
+      </button>
+      <button 
+        id="third-person-btn" 
+        class="px-3 py-1 font-mono text-xxxs uppercase tracking-widest border border-zinc-200 text-zinc-500 hover:border-zinc-400 hover:text-zinc-700 dark:border-zinc-800 dark:text-zinc-500 dark:hover:border-zinc-600 dark:hover:text-zinc-300 transition-all rounded"
+        data-view="third"
+      >
+        Third Person
+      </button>
+    </div>
+  </div>
+
+  <div class="space-y-8">
+    <!-- Short Bio -->
+    <div class="group relative">
+      <div class="flex items-center justify-between mb-2">
+        <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400">[01] Short Biography</span>
+        <button 
+          class="copy-btn opacity-0 group-hover:opacity-100 transition-opacity font-mono text-xxxs uppercase tracking-widest text-emerald-600 dark:text-emerald-400 hover:underline"
+          data-target="short-bio-content"
+        >
+          Copy_Data
+        </button>
+      </div>
+      <div class="p-4 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-100 dark:border-zinc-900 rounded">
+        <div class="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400" id="short-bio-content">
+          <p class="first-person block">
+            I am an AI engineer and technologist from Bengaluru, India, specializing in LLM orchestration, autonomous agentic workflows, and emerging systems like GPUs and IoT. I host the 'Idunammatechu' Tamil tech podcast and actively contribute to global tech communities and education initiatives.
+          </p>
+          <p class="third-person hidden block">
+            Dhanush Kandhan (aka Dhanu) is an AI engineer and technologist from Bengaluru, India. He specializes in LLM orchestration and autonomous agentic workflows, while exploring emerging systems like GPUs and IoT. Dhanush is the host of the 'Idunammatechu' Tamil tech podcast and a dedicated contributor to tech communities and education.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Long Bio -->
+    <div class="group relative">
+      <div class="flex items-center justify-between mb-2">
+        <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400">[02] Long Biography</span>
+        <button 
+          class="copy-btn opacity-0 group-hover:opacity-100 transition-opacity font-mono text-xxxs uppercase tracking-widest text-emerald-600 dark:text-emerald-400 hover:underline"
+          data-target="long-bio-content"
+        >
+          Copy_Data
+        </button>
+      </div>
+      <div class="p-4 bg-zinc-50 dark:bg-zinc-900/50 border border-zinc-100 dark:border-zinc-900 rounded">
+        <div class="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400" id="long-bio-content">
+          <div class="first-person block space-y-4">
+            <p>
+              I am a senior AI engineer and developer based in Bengaluru, specializing in the architecture of scalable products and high-performance systems. My work is centered at the intersection of AI orchestration, GPU-accelerated computing, and robust SaaS development. With a background that includes research at the University of Cambridge and developer technology at Nvidia, I focus on optimizing resource thresholds and building efficient, production-ready infrastructures.
+            </p>
+            <p>
+              I am a strong advocate for open source, actively developing tools that solve real-world engineering challenges. Beyond technical architecture, I lead community-driven initiatives as a Technical Regional Leader for UN Youth Volunteers and mentor the next generation of builders. I also host the 'Idunammatechu' Tamil tech podcast, where I bridge the gap between complex technology and cultural narratives.
+            </p>
+            <p>
+              When I’m away from the system, I explore the intersections of hardware and software through IoT tinkering, electronic experimentation, and adventure photography.
+            </p>
+          </div>
+          <div class="third-person hidden block space-y-4">
+            <p>
+              Dhanush Kandhan (aka Dhanu) is a senior AI engineer and developer from Bengaluru, India, with a deep focus on product building, GPU-accelerated systems, and scalable SaaS architecture. His expertise lies in LLM orchestration and high-performance computing, where he leverages his experience from the University of Cambridge and Nvidia to optimize complex resource thresholds and deployment pipelines.
+            </p>
+            <p>
+              Dhanush is a prolific contributor to the open-source community, building tailored tools for developers and industry builders. He serves as the Technical Regional Leader for UN Youth Volunteers in India and is the voice of 'Idunammatechu', a prominently recognized Tamil podcast that explores tech, culture, and innovation. His work is defined by a commitment to scaling both software and engineering communities.
+            </p>
+            <p>
+              An avid builder and motorhead, Dhanush frequently explores the intersection of hardware and software through IoT experimentation and adventure travel.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  function setupBiography() {
+    const firstPersonBtn = document.getElementById('first-person-btn');
+    const thirdPersonBtn = document.getElementById('third-person-btn');
+    const firstPersonTexts = document.querySelectorAll('.first-person');
+    const thirdPersonTexts = document.querySelectorAll('.third-person');
+    const copyBtns = document.querySelectorAll('.copy-btn');
+    
+    // Load persisted view or default to 'first'
+    let currentView = localStorage.getItem('bio-perspective') || 'first';
+
+    function toggleView(view) {
+      currentView = view;
+      localStorage.setItem('bio-perspective', view);
+      
+      const activeClassList = ['border-zinc-900', 'bg-zinc-900', 'text-white', 'dark:border-zinc-100', 'dark:bg-zinc-100', 'dark:text-black'];
+      const inactiveClassList = ['border-zinc-200', 'text-zinc-500', 'hover:border-zinc-400', 'hover:text-zinc-700', 'dark:border-zinc-800', 'dark:text-zinc-500', 'dark:hover:border-zinc-600', 'dark:hover:text-zinc-300', 'bg-transparent'];
+
+      if (view === 'first') {
+        firstPersonBtn?.classList.remove(...inactiveClassList);
+        firstPersonBtn?.classList.add(...activeClassList);
+        thirdPersonBtn?.classList.remove(...activeClassList);
+        thirdPersonBtn?.classList.add(...inactiveClassList);
+        firstPersonTexts.forEach(t => t.classList.remove('hidden'));
+        thirdPersonTexts.forEach(t => t.classList.add('hidden'));
+      } else {
+        thirdPersonBtn?.classList.remove(...inactiveClassList);
+        thirdPersonBtn?.classList.add(...activeClassList);
+        firstPersonBtn?.classList.remove(...activeClassList);
+        firstPersonBtn?.classList.add(...inactiveClassList);
+        thirdPersonTexts.forEach(t => t.classList.remove('hidden'));
+        firstPersonTexts.forEach(t => t.classList.add('hidden'));
+      }
+    }
+
+    // Initialize with current view
+    toggleView(currentView);
+
+    firstPersonBtn?.addEventListener('click', () => toggleView('first'));
+    thirdPersonBtn?.addEventListener('click', () => toggleView('third'));
+
+    copyBtns.forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const targetId = btn.getAttribute('data-target');
+        const container = document.getElementById(targetId);
+        const textToCopy = container.querySelector(`.${currentView}-person`).innerText;
+        
+        try {
+          await navigator.clipboard.writeText(textToCopy);
+          if (window.showToast) {
+            window.showToast('COPIED_TO_CLIPBOARD');
+          }
+        } catch (err) {
+          console.error('Failed to copy: ', err);
+        }
+      });
+    });
+  }
+
+  // Handle both initial load and view transitions
+  document.addEventListener('astro:page-load', setupBiography);
+</script>

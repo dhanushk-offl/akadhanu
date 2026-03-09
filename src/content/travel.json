@@ -1,0 +1,110 @@
+[
+    {
+        "place": "Jaisalmer",
+        "country": "India",
+        "visited": true,
+        "x": 20,
+        "y": 25,
+        "date": "2024",
+        "type": "Desert/Forts"
+    },
+    {
+        "place": "Nashik",
+        "country": "India",
+        "visited": true,
+        "x": 28,
+        "y": 52,
+        "date": "2023",
+        "type": "Wine Capital/Temples"
+    },
+    {
+        "place": "Mumbai",
+        "country": "India",
+        "visited": true,
+        "x": 25,
+        "y": 58,
+        "date": "2024",
+        "type": "Coastal/Metropolis"
+    },
+    {
+        "place": "Hyderabad",
+        "country": "India",
+        "visited": true,
+        "x": 52,
+        "y": 65,
+        "date": "2023",
+        "type": "Historical/Tech"
+    },
+    {
+        "place": "Chennai",
+        "country": "India",
+        "visited": true,
+        "x": 65,
+        "y": 82,
+        "date": "2025",
+        "type": "Coastal/Capital"
+    },
+    {
+        "place": "Bengaluru",
+        "country": "India",
+        "visited": true,
+        "x": 48,
+        "y": 82,
+        "date": "2024",
+        "type": "Tech Hub/Garden City"
+    },
+    {
+        "place": "Coorg",
+        "country": "India",
+        "visited": true,
+        "x": 45,
+        "y": 84,
+        "date": "2024",
+        "type": "Hills/Coffee Plantation"
+    },
+    {
+        "place": "Mysore",
+        "country": "India",
+        "visited": true,
+        "x": 48,
+        "y": 86,
+        "date": "2024",
+        "type": "Heritage/Palace"
+    },
+    {
+        "place": "Wayanad",
+        "country": "India",
+        "visited": true,
+        "x": 44,
+        "y": 88,
+        "date": "2024",
+        "type": "Nature/Wildlife"
+    },
+    {
+        "place": "Kodaikanal",
+        "country": "India",
+        "visited": true,
+        "x": 55,
+        "y": 90,
+        "date": "2025",
+        "type": "Hills/Forest"
+    },
+    {
+        "place": "Munnar",
+        "country": "India",
+        "visited": true,
+        "x": 50,
+        "y": 94,
+        "date": "2024",
+        "type": "Tea Garden/Hills"
+    },
+    {
+        "place": "Varkala",
+        "country": "India",
+        "visited": true,
+        "x": 48,
+        "y": 98,
+        "date": "2025",
+        "type": "Coastal/Cliffs"
+    }
+]

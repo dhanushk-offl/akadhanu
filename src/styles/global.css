@@ -1,0 +1,165 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Use class-based dark mode so theme is controlled by .dark on html, not system preference */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-serif: "Lora", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+
+  --text-xxxs: 0.65rem;
+  --text-xxxs--line-height: 0.9rem;
+  --text-xxs: 0.75rem;
+  --text-xxs--line-height: 1rem;
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.2rem;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.25rem;
+  --text-base: 0.9375rem;
+  --text-base--line-height: 1.4rem;
+  --text-lg: 1rem;
+  --text-lg--line-height: 1.5rem;
+  --text-xl: 1.125rem;
+  --text-xl--line-height: 1.6rem;
+  --text-2xl: 1.25rem;
+  --text-2xl--line-height: 1.6rem;
+  --text-3xl: 1.5rem;
+  --text-3xl--line-height: 1.8rem;
+  --text-4xl: 1.875rem;
+  --text-4xl--line-height: 2.1rem;
+  --text-5xl: 2.25rem;
+  --text-5xl--line-height: 2.4rem;
+
+  --color-primary: var(--color-zinc-100);
+}
+
+@layer base {
+  :root {
+    --color-primary: #f4f4f5;
+  }
+
+  body {
+    @apply font-sans antialiased bg-black text-zinc-200;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-semibold tracking-tight text-zinc-100;
+  }
+}
+
+@layer utilities {
+  .border-subtle {
+    @apply border-zinc-800;
+  }
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter-Variable.ttf') format('truetype');
+  font-weight: 300 900;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono.ttf') format('truetype');
+  font-weight: 300 900;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Lora';
+  src: url('/fonts/Lora.ttf') format('truetype');
+  font-weight: 300 900;
+  font-display: swap;
+  font-style: normal;
+}
+
+/* Minimalist Link Style */
+a:not(.plain):not(.tag):not(.internal-link):not(.footnote):not(.reversefootnote):not(.prose a) {
+  @apply underline decoration-zinc-800 underline-offset-4 hover:decoration-zinc-100 transition-colors;
+}
+
+@utility hover-glitch {
+  &:hover {
+    animation: glitch-text 0.2s linear infinite;
+    color: var(--color-zinc-100);
+  }
+}
+
+@utility geeky-link {
+  position: relative;
+  transition: all 0.2s ease;
+
+  &::after {
+    content: "_";
+    display: inline-block;
+    margin-left: 4px;
+    opacity: 0;
+    color: currentColor;
+  }
+
+  &:hover::after {
+    opacity: 1;
+    animation: terminal-blink 0.8s step-end infinite;
+  }
+}
+
+@utility animate-terminal-cursor {
+  animation: terminal-blink 0.8s step-end infinite;
+}
+
+@utility mono-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xxs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  color: var(--color-zinc-500);
+}
+
+@keyframes terminal-blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes glitch-text {
+  0% {
+    transform: translate(0);
+  }
+
+  20% {
+    transform: translate(-1px, 1px);
+  }
+
+  40% {
+    transform: translate(1px, -1px);
+  }
+
+  60% {
+    transform: translate(-1px, -1px);
+  }
+
+  80% {
+    transform: translate(1px, 1px);
+  }
+
+  100% {
+    transform: translate(0);
+  }
+}

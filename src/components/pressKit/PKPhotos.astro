@@ -1,0 +1,53 @@
+---
+import Title from '../ui/Title.astro';
+
+const images = [
+  {
+    alt: 'Portrait One',
+    src: '/assets/press-kit/picture_one.png',
+  },
+  {
+    alt: 'Portrait Two',
+    src: '/assets/press-kit/picture_two.png',
+  },
+  {
+    alt: 'Portrait Three',
+    src: '/assets/press-kit/picture_three.jpg',
+  },
+  {
+    alt: 'Portrait Four',
+    src: '/assets/press-kit/picture_four.jpg',
+  },
+];
+
+---
+
+<div class="space-y-6">
+  <div>
+    <Title title="📸 Portraits" level={3} className="text-3xl" id="photos-heading" />
+    <p class="text-zinc-500 dark:text-zinc-400 mt-2">
+      High-resolution portrait photos for conference programs and media. Please do not crop or edit.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+    {images.map((image) => (
+      <div class="group relative aspect-square overflow-hidden rounded-lg border border-zinc-100 dark:border-zinc-900 bg-zinc-50 dark:bg-zinc-900/50">
+        <img 
+          src={image.src} 
+          alt={image.alt}
+          class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+        />
+        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+          <a
+            href={image.src}
+            download
+            class="px-3 py-1 bg-white text-black font-mono text-xxxs uppercase tracking-widest hover:bg-zinc-200 transition-colors rounded"
+          >
+            Download_HD
+          </a>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>

@@ -1,0 +1,123 @@
+---
+import Main from "../../layouts/Main.astro";
+import { AppConfig } from "../../config/AppConfig";
+import Parser from "rss-parser";
+import { format } from 'date-fns';
+
+export async function getStaticPaths() {
+  const parser = new Parser();
+  const feed = await parser.parseURL("https://medium.com/feed/@itzmedhanu");
+  
+  return feed.items.map((item) => {
+    const slug = item.title
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/[\s_-]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    
+    return {
+      params: { slug },
+      props: { post: item },
+    };
+  });
+}
+
+const { post } = Astro.props;
+const pubDate = new Date(post.pubDate);
+
+// Extract content from Medium (it usually comes in content:encoded or content)
+const content = post['content:encoded'] || post.content || post.contentSnippet;
+---
+
+<Main
+  meta={{
+    title: `${post.title} | Blog | ${AppConfig.title}`,
+    description: post.contentSnippet?.slice(0, 160) || post.title,
+  }}
+>
+  <article class="max-w-2xl mx-auto py-8">
+    <header class="mb-12 space-y-4">
+      <div class="flex items-center gap-4">
+        <a href="/blog" class="font-mono text-[10px] uppercase tracking-widest text-emerald-500 hover:underline">
+          ← Back to Blog
+        </a>
+        <span class="text-zinc-800">/</span>
+        <time datetime={pubDate.toISOString()} class="font-mono text-[10px] uppercase tracking-widest text-zinc-500">
+           {format(pubDate, 'MMMM dd, yyyy')}
+        </time>
+      </div>
+
+      <h1 class="text-3xl md:text-4xl font-bold text-zinc-100 leading-tight">
+        {post.title}
+      </h1>
+
+      <div class="flex flex-wrap gap-2 pt-2">
+        {post.categories?.map(category => (
+          <span class="px-2 py-0.5 bg-zinc-900 border border-zinc-800 rounded text-[9px] font-mono uppercase tracking-wider text-zinc-400">
+            {category}
+          </span>
+        ))}
+      </div>
+    </header>
+
+    <div class="prose prose-invert prose-zinc max-w-none 
+      prose-headings:text-zinc-100 prose-headings:font-bold 
+      prose-p:text-zinc-400 prose-p:leading-relaxed
+      prose-a:text-emerald-500 prose-a:no-underline hover:prose-a:underline
+      prose-strong:text-zinc-200
+      prose-code:text-emerald-400 prose-code:bg-zinc-900 prose-code:px-1 prose-code:rounded
+      prose-img:rounded-xl prose-img:border prose-img:border-zinc-800
+      font-mono text-sm leading-relaxed"
+      set:html={content}
+    />
+    
+    <footer class="mt-16 pt-8 border-t border-zinc-900">
+       <div class="flex justify-between items-center">
+          <p class="text-xxs font-mono text-zinc-500 uppercase tracking-widest">
+            Originally published on <a href={post.link} target="_blank" class="text-emerald-500 underline">Medium</a>
+          </p>
+          <a href="/blog" class="text-xxs font-mono text-zinc-500 uppercase tracking-widest hover:text-zinc-100 transition-colors">
+            View all posts →
+          </a>
+       </div>
+    </footer>
+  </article>
+</Main>
+
+<style is:global>
+  /* Custom fixes for Medium content styling inside the prose */
+  .prose figure {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+  .prose figcaption {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--color-zinc-600);
+    font-family: var(--font-mono);
+    margin-top: 0.5rem;
+  }
+  .prose blockquote {
+    border-left-width: 2px;
+    border-color: var(--color-emerald-500);
+    padding-left: 1rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+    font-style: italic;
+    color: var(--color-zinc-300);
+    background-color: rgb(24 24 27 / 0.3); /* zinc-900/30 */
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+  }
+  .prose img {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .prose iframe {
+    border-radius: 0.75rem;
+    border-width: 1px;
+    border-color: var(--color-zinc-800);
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+</style>

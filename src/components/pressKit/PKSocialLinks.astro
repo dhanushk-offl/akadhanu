@@ -1,0 +1,102 @@
+---
+import { 
+  TwitterLogo, 
+  LinkedinLogo, 
+  InstagramLogo, 
+  ThreadsLogo, 
+  FacebookLogo,
+  GithubLogo,
+  Copy
+} from "@phosphor-icons/react";
+
+const LINKS = [
+  {
+    name: "Twitter",
+    url: "https://x.com/akadhanu",
+    icon: TwitterLogo,
+    handle: "@akadhanu"
+  },
+  {
+    name: "LinkedIn",
+    url: "https://www.linkedin.com/in/dhanushkandhan/",
+    icon: LinkedinLogo,
+    handle: "dhanushkandhan"
+  },
+  {
+    name: "GitHub",
+    url: "https://github.com/dhanushk-offl",
+    icon: GithubLogo,
+    handle: "dhanushk-offl"
+  },
+  {
+    name: "Instagram",
+    url: "https://www.instagram.com/itsmedhanushk_/",
+    icon: InstagramLogo,
+    handle: "@itsmedhanushk_"
+  }
+];
+---
+
+<div class="space-y-6">
+  <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    {
+      LINKS.map((link) => (
+        <li class="group relative p-4 rounded-lg border border-zinc-100 dark:border-zinc-900 bg-zinc-50/50 dark:bg-zinc-900/50 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all overflow-hidden">
+          <!-- Nerdy Background Glow (Moved to bottom-right) -->
+          <div class="absolute -right-4 -bottom-4 opacity-0 group-hover:opacity-10 transition-opacity rotate-12">
+            <link.icon size={80} weight="duotone" />
+          </div>
+
+          <div class="relative z-10 flex items-start justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center gap-2">
+                <link.icon size={20} weight="bold" class="text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-100 transition-colors" />
+                <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400">[{link.name}]</span>
+              </div>
+              
+              <div class="space-y-1">
+                <p class="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                  {link.handle}
+                </p>
+                <a href={link.url} target="_blank" class="block text-xxs font-mono text-zinc-500 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors truncate max-w-[200px]">
+                  {link.url.replace('https://', '')}
+                </a>
+              </div>
+            </div>
+
+            <button 
+              class="copy-btn absolute top-2 right-2 p-1.5 rounded-md opacity-0 group-hover:opacity-100 bg-white dark:bg-zinc-800 shadow-sm border border-zinc-200 dark:border-zinc-700 hover:text-emerald-600 transition-all duration-200"
+              data-url={link.url}
+              title="Copy URL"
+            >
+              <Copy size={14} />
+            </button>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<script is:inline>
+  function setupSocialCopy() {
+    const copyButtons = document.querySelectorAll('.copy-btn');
+    
+    copyButtons.forEach(button => {
+      button.addEventListener('click', async function(e) {
+        e.preventDefault();
+        const url = this.getAttribute('data-url');
+        
+        try {
+          await navigator.clipboard.writeText(url);
+          (window as any).showToast(`LINK_COPIED: ${url.replace('https://', '')}`);
+        } catch (err) {
+          console.error('Failed to copy', err);
+        }
+      });
+    });
+  }
+
+  setupSocialCopy();
+  document.addEventListener('astro:after-swap', setupSocialCopy);
+</script>

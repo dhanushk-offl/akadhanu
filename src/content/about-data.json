@@ -1,0 +1,72 @@
+{
+    "experience": [
+        {
+            "company": "Stitchflow Inc.",
+            "role": "Developer Architect Intern",
+            "timeline": "Jul 2025 - Sep 2025",
+            "description": "Architected the AI Agents for discover the apps your employees are using, detect potential risks by tracking app scopes, and prevent compliance gaps before they escalate."
+        },
+        {
+            "company": "Freelance (Scale AI)",
+            "role": "Independent Software Consultant",
+            "timeline": "Mar 2025 - Jul 2025",
+            "description": "Optimized open-model inference pipelines and implemented quantization for efficient multi-device GenAI deployment."
+        },
+        {
+            "company": "Talentship (TSI Technologies Private Ltd.)",
+            "role": "Software Engineering Intern",
+            "timeline": "Aug 2024 - Oct 2024",
+            "description": "Built a full stack web application called SmartGoals for the company to track their employees goals and progress."
+        },
+        {
+            "company": "Nvidia Corporation",
+            "role": "Developer Technology Intern",
+            "timeline": "May 2024 - Jul 2024",
+            "description": "Built AI frame prediction models (CNNs/RNNs) to optimize GPU workload and improve game performance and frame rates by 15%."
+        },
+        {
+            "company": "Yellow.ai",
+            "role": "Data Science Intern",
+            "timeline": "May 2023 - Jul 2023",
+            "description": "Developed a deep learning model to detect anomalies in customer conversations and improved the accuracy of the model"
+        }
+    ],
+    "education": [
+        {
+            "institution": "MIT Open Learning",
+            "field": "Statistics & Data Science",
+            "year": "2023-2025"
+        },
+        {
+            "institution": "C. Abdul Hakeem College of Engineering and Technology",
+            "field": "Bachelor of Technology in Information Technology",
+            "year": "2022-2026"
+        }
+    ],
+    "focus": [
+        {
+            "title": "LetRetro",
+            "description": "An AI Powered Retrospective and Team Feedback Suite for IT Teams.",
+            "url": "https://letretro.com?utm_source=dhanu_p",
+            "status": "Active"
+        },
+        {
+            "title": "A-spect",
+            "description": "LLM Observatory & Prompt Management Suite for AI Agents Builders",
+            "url": "",
+            "status": "In Progress"
+        }
+    ],
+    "milestones": [
+        {
+            "title": "Winner - Smart India Hackathon 2025 (Software Edition)",
+            "period": "2025",
+            "description": "Won the Smart India Hackathon 2025 (Software Edition) for building an AI Powered Safety Routing Application for Womens in Metropolitian Cities."
+        },
+        {
+            "title": "Best Social Inclined Innovation Project (IITM Shastra TechFest)",
+            "period": "2022",
+            "description": "Awarded the title of \"Best Socially Inclined Innovation Project\" for my project titled \"Medi-Drone\" at the Shaastra Tech Fest 2022, hosted by the Indian Institute of Technology, Madras. The project involves the deployment of a fully automated drone capable of carrying loads exceeding 4 kilograms across a distance of more than 20 kilometers. Notably, the drone itself weighs 1.5 kilograms."
+        }
+    ]
+}

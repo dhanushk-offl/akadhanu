@@ -1,0 +1,73 @@
+---
+interface Props {
+  emoji?: string; // Kept for prop compatibility, but will use for icon logic if needed
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+const timestamp = new Date().toISOString().split('T')[0];
+---
+
+<div class="mb-12 group">
+  <!-- Terminal Window Decoration -->
+  <div class="flex items-center gap-4 mb-4">
+    <div class="flex gap-1.5">
+      <div class="size-2.5 rounded-full bg-zinc-800"></div>
+      <div class="size-2.5 rounded-full bg-zinc-800"></div>
+      <div class="size-2.5 rounded-full bg-zinc-800"></div>
+    </div>
+    <div class="h-px flex-1 bg-zinc-900"></div>
+    <div class="font-mono text-[10px] text-zinc-600 uppercase tracking-widest flex items-center gap-3">
+      <span>Status: OK</span>
+      <span class="hidden sm:inline">|</span>
+      <span class="hidden sm:inline">{timestamp}</span>
+    </div>
+  </div>
+
+  <div class="space-y-4">
+    <div class="flex items-baseline gap-3">
+      <span class="text-emerald-500 font-mono text-xl font-bold">></span>
+      <h1 class="font-mono text-2xl font-bold tracking-tighter text-zinc-100 sm:text-3xl uppercase relative">
+        <span id="typed-title" class="inline-block min-h-[1em]"></span>
+        <span class="animate-terminal-cursor">_</span>
+        <!-- Hidden but present for SEO -->
+        <span class="sr-only" id="original-title">{title}</span>
+      </h1>
+    </div>
+...
+<script is:inline>
+  function setupTyping() {
+    const titleEl = document.getElementById('original-title');
+    const typedEl = document.getElementById('typed-title');
+    if (!titleEl || !typedEl) return;
+
+    const text = titleEl.textContent || "";
+    typedEl.textContent = "";
+    let i = 0;
+
+    function type() {
+      if (i < text.length) {
+        typedEl.textContent += text.charAt(i);
+        i++;
+        setTimeout(type, Math.random() * 50 + 50);
+      }
+    }
+
+    type();
+  }
+
+  setupTyping();
+  document.addEventListener('astro:after-swap', setupTyping);
+</script>
+  
+    {description && (
+      <div class="relative pl-6 py-1">
+        <div class="absolute left-0 top-0 bottom-0 w-px bg-zinc-800"></div>
+        <p class="max-w-2xl text-sm font-mono leading-relaxed text-zinc-500">
+          // {description}
+        </p>
+      </div>
+    )}
+  </div>
+</div>

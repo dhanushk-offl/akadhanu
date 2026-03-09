@@ -1,0 +1,126 @@
+---
+import NavLink from './NavLink.astro';
+
+const { pathname } = Astro.url;
+
+const navItems = [
+  { href: '/', label: 'Home', id: '01' },
+  { href: '/about', label: 'About', id: '02' },
+  { href: '/blog', label: 'Blog', id: '03' },
+  { href: '/projects', label: 'Projects', id: '04' },
+  { href: '/books', label: 'Books', id: '05' },
+];
+
+const activeItem = navItems.find(item => 
+  item.href === '/' ? pathname === '/' : pathname.startsWith(item.href)
+) || navItems[0];
+---
+
+<header class="sticky top-0 z-[100] bg-black/80 backdrop-blur-md border-b border-zinc-900 py-3 mb-4">
+	<nav class="relative">
+		<div class="flex items-center justify-between">
+			<div class="flex items-center gap-2">
+				<a href="/" class="plain font-mono text-sm font-bold tracking-tighter hover-glitch transition-colors duration-200 text-zinc-100">
+					DK.
+				</a>
+				<span class="text-zinc-800 font-mono text-xs sm:hidden">/</span>
+				<button 
+					id="menu-toggle"
+					class="sm:hidden font-mono text-xxs uppercase tracking-widest text-zinc-100 flex items-center gap-1"
+				>
+					{activeItem.label}
+					<span class="text-[10px] opacity-50">▼</span>
+				</button>
+			</div>
+
+			<ul id="desktop-nav" class="hidden sm:flex items-center gap-2 font-mono text-xxs uppercase tracking-widest text-zinc-400">
+				{navItems.map(item => (
+					<li>
+						<NavLink isExact={item.href === '/'} href={item.href}>
+							<span class="text-[10px] opacity-50 mr-0.5">[{item.id}]</span>
+							{item.label}
+						</NavLink>
+					</li>
+				))}
+			</ul>
+		</div>
+
+		<!-- Mobile Nav Drawer (Compact) -->
+		<div 
+			id="mobile-nav" 
+			class="hidden absolute top-full left-0 w-full bg-black border-x border-b border-zinc-900 z-50 py-6 px-4 mt-2 shadow-2xl shadow-black/5 space-y-8"
+		>
+			<ul class="flex flex-col gap-2 font-mono text-xxs uppercase tracking-widest">
+				{navItems.map(item => (
+					<li>
+						<NavLink isExact={item.href === '/'} href={item.href}>
+							<span class="text-[10px] opacity-50 mr-0.5">[{item.id}]</span>
+							{item.label}
+						</NavLink>
+					</li>
+				))}
+			</ul>
+
+			<div class="space-y-4 pt-4 border-t border-zinc-900">
+				<span class="font-mono text-[10px] text-zinc-600 uppercase tracking-widest block">Quick_Access</span>
+				<div class="grid grid-cols-2 gap-2">
+					<a href="/stack" class="px-3 py-2 border border-zinc-800 rounded font-mono text-[10px] text-zinc-400 uppercase tracking-widest hover:border-zinc-100 hover:text-zinc-100 transition-colors">
+						Tech_Manifest
+					</a>
+					<a href="/press-kit" class="px-3 py-2 border border-zinc-800 rounded font-mono text-[10px] text-zinc-400 uppercase tracking-widest hover:border-zinc-100 hover:text-zinc-100 transition-colors">
+						Press_Kit
+					</a>
+				</div>
+				<button id="mobile-help-trigger" class="w-full px-3 py-2 bg-zinc-100 text-black font-mono text-[10px] uppercase tracking-widest rounded hover:bg-white transition-colors">
+					System_Manual (man)
+				</button>
+			</div>
+		</div>
+	</nav>
+</header>
+
+<script>
+	function initHeader() {
+		const toggle = document.getElementById('menu-toggle');
+		const mobileNav = document.getElementById('mobile-nav');
+		const helpTrigger = document.getElementById('mobile-help-trigger');
+
+		if (toggle && mobileNav) {
+			toggle.addEventListener('click', () => {
+				mobileNav.classList.toggle('hidden');
+				const isHidden = mobileNav.classList.contains('hidden');
+				const span = toggle.querySelector('span');
+				if (span) span.textContent = isHidden ? '▼' : '▲';
+			});
+
+			if (helpTrigger) {
+				helpTrigger.addEventListener('click', () => {
+					mobileNav.classList.add('hidden');
+					const span = toggle.querySelector('span');
+					if (span) span.textContent = '▼';
+					// Trigger the global 'man' command logic
+					const event = new KeyboardEvent('keydown', { key: 'm' });
+					document.dispatchEvent(event);
+					setTimeout(() => document.dispatchEvent(new KeyboardEvent('keydown', { key: 'a' })), 10);
+					setTimeout(() => document.dispatchEvent(new KeyboardEvent('keydown', { key: 'n' })), 20);
+				});
+			}
+
+			// Close menu when clicking outside
+			document.addEventListener('click', (event) => {
+				const target = event.target as HTMLElement;
+				if (!toggle.contains(target) && !mobileNav.contains(target)) {
+					mobileNav.classList.add('hidden');
+					const span = toggle.querySelector('span');
+					if (span) span.textContent = '▼';
+				}
+			});
+		}
+	}
+
+	// Runs on initial load
+	initHeader();
+
+	// Runs on every view transition navigation
+	document.addEventListener('astro:after-swap', initHeader);
+</script>

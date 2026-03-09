@@ -1,0 +1,84 @@
+---
+import clsx from 'clsx';
+
+interface Props {
+  title: string;
+  level: number;
+  className: string;
+  id?: string;
+}
+
+const { title, level, className, id } = Astro.props;
+---
+
+{level === 1 && (
+  <h1
+    id={id}
+    class={clsx(
+      "mb-2 font-mono font-bold tracking-tighter text-zinc-900 dark:text-zinc-100",
+      className
+    )}
+  >
+    {title}
+  </h1>
+)}
+
+{level === 2 && (
+  <h2
+    id={id}
+    class={clsx(
+      "mb-2 font-mono font-bold tracking-tighter text-zinc-900 dark:text-zinc-100",
+      className
+    )}
+  >
+    {title}
+  </h2>
+)}
+
+{level === 3 && (
+  <h3
+    id={id}
+    class={clsx(
+      "mb-2 font-mono font-bold tracking-tighter text-zinc-900 dark:text-zinc-100",
+      className
+    )}
+  >
+    {title}
+  </h3>
+)}
+
+{level === 4 && (
+  <h4
+    id={id}
+    class={clsx(
+      "mb-2 font-mono font-bold tracking-tighter text-zinc-900 dark:text-zinc-100",
+      className
+    )}
+  >
+    {title}
+  </h4>
+)}
+
+{level === 5 && (
+  <h5
+    id={id}
+    class={clsx(
+      "mb-2 font-mono font-bold tracking-tighter text-zinc-900 dark:text-zinc-100",
+      className
+    )}
+  >
+    {title}
+  </h5>
+)}
+
+{level === 6 && (
+  <h6
+    id={id}
+    class={clsx(
+      "mb-2 font-mono font-bold tracking-tighter text-zinc-900 dark:text-zinc-100",
+      className
+    )}
+  >
+    {title}
+  </h6>
+)}

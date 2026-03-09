@@ -1,0 +1,42 @@
+---
+import PageHeader from "../components/PageHeader.astro";
+import ToolItem from "../components/uses/ToolItem.astro";
+import { AppConfig } from "../config/AppConfig";
+import Main from "../layouts/Main.astro";
+import { groupToArray } from "../lib/utils";
+import tools from "../content/tools.json";
+
+const groupedTools = groupToArray(tools, "category");
+---
+
+<Main
+  meta={{
+    title: `Tools | ${AppConfig.title}`,
+    description: AppConfig.description,
+  }}
+>
+  <div class="pb-8 pt-2">
+    <PageHeader
+      title="Tools & Gear"
+      emoji="⚒️"
+      description="The hardware, software, and systems that power my workflow."
+    />
+
+    <div class="mt-12 space-y-16">
+      {
+        groupedTools.map((group, gIndex) => (
+          <section id={`category-${gIndex}`} class="space-y-6">
+            <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400 block mb-4">
+              [{gIndex.toString().padStart(2, '0')}] {group.label}
+            </span>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {group.items.map((tool, tIndex) => (
+                <ToolItem tool={tool} index={tIndex} groupIndex={gIndex} />
+              ))}
+            </div>
+          </section>
+        ))
+      }
+    </div>
+  </div>
+</Main>

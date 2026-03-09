@@ -1,0 +1,134 @@
+---
+import PageHeader from "../components/PageHeader.astro";
+import { AppConfig } from "../config/AppConfig";
+import Main from "../layouts/Main.astro";
+
+const stack = [
+  {
+    category: "Languages",
+    items: [
+      { name: "Python", version: "3.14", status: "Primary", level: "Expert" },
+      { name: "TypeScript", version: "5.x", status: "Active", level: "Advanced" },
+      { name: "JavaScript", version: "ESNext", status: "Active", level: "Expert" },
+      { name: "SQL", version: "PostgreSQL", status: "Active", level: "Advanced" },
+      { name: "Kotlin", version: "1.9.x", status: "Tinkering", level: "Intermediate" },
+       { name: "PHP", version: "8.5", status: "Tinkering", level: "Intermediate" },
+      { name: "HTML/CSS", version: "5/3", status: "Native", level: "Expert" },
+    ]
+  },
+  {
+    category: "Frameworks & Libs",
+    items: [
+      { name: "Tensorflow", version: "2.x", status: "Primary", level: "Expert" },
+      { name: "SvelteKit", version: "2.x", status: "Active", level: "Advanced" },
+      { name: "React", version: "19.x", status: "Primary", level: "Expert" },
+      { name: "Next.js", version: "15.x", status: "Active", level: "Expert" },
+      { name: "TailwindCSS", version: "3.4", status: "Core", level: "Expert" },
+      { name: "FastAPI", version: "0.135", status: "Core", level: "Advanced" },
+      { name: "Express", version: "4.x", status: "Legacy", level: "Advanced" },
+    ]
+  },
+  {
+    category: "Infrastructure",
+    items: [
+      { name: "Supabase", version: "Managed", status: "Expert", level: "Expert" },
+      { name: "Railways", version: "Managed", status: "Active", level: "Advanced" },
+      { name: "Cloudflare", version: "Workers", status: "Active", level: "Advanced" },
+      { name: "Docker", version: "Container", status: "Core", level: "Intermediate" },
+      { name: "Vercel", version: "Managed", status: "Active", level: "Advanced" },
+      { name: "GCP", version: "GCE", status: "Active", level: "Advanced" },
+      { name: "pnpm", version: "10.31", status: "Runtime", level: "Advanced" },
+    ]
+  }
+];
+---
+
+<Main
+  meta={{
+    title: `Tech Stack | ${AppConfig.title}`,
+    description: "The technical manifest of tools and technologies I use to build software.",
+  }}
+>
+  <div class="pb-8 pt-2">
+    <PageHeader
+      title="Tech Manifest"
+      description="System-wide audit of active languages, frameworks, and infrastructure."
+    />
+
+    <div class="mt-12 space-y-16">
+      {stack.map((group, gIndex) => (
+        <section class="space-y-6">
+          <div class="flex items-center gap-4">
+            <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400">
+              [{gIndex.toString().padStart(2, '0')}] {group.category}
+            </span>
+            <div class="h-px flex-1 bg-zinc-900"></div>
+          </div>
+
+          <div class="grid grid-cols-1 gap-1">
+            <div class="hidden md:grid grid-cols-12 gap-4 px-4 py-2 font-mono text-[10px] uppercase tracking-widest text-zinc-600 border-b border-zinc-900">
+              <div class="col-span-1">ID</div>
+              <div class="col-span-4">Technology</div>
+              <div class="col-span-2">Version</div>
+              <div class="col-span-3">Status</div>
+              <div class="col-span-2 text-right">Proficiency</div>
+            </div>
+
+            {group.items.map((item, iIndex) => {
+              const hexId = `0x${((gIndex + 1) * 16 + (iIndex + 1)).toString(16).toUpperCase().padStart(2, '0')}`;
+              return (
+                <div class="group grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 p-4 md:px-4 md:py-3 rounded hover:bg-zinc-900/50 transition-colors items-center border border-transparent hover:border-zinc-800">
+                  <div class="col-span-1 font-mono text-xxxs text-zinc-600 group-hover:text-zinc-400">
+                    [{hexId}]
+                  </div>
+                  
+                  <div class="col-span-4 flex items-center gap-2">
+                    <span class="text-sm font-bold text-zinc-100">{item.name}</span>
+                    <span class="opacity-0 group-hover:opacity-100 transition-opacity text-emerald-500 font-mono text-xs hidden md:inline">←</span>
+                  </div>
+
+                  <div class="col-span-2 font-mono text-xxs text-zinc-500">
+                    <span class="md:hidden text-zinc-700 mr-2">VER:</span>{item.version}
+                  </div>
+
+                  <div class="col-span-3 flex items-center">
+                    <span class="md:hidden text-zinc-700 mr-2 text-xxs font-mono">STATUS:</span>
+                    <span class={`font-mono text-[10px] px-2 py-0.5 rounded uppercase tracking-tighter ${
+                      item.status === 'Primary' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
+                      item.status === 'Active' ? 'bg-sky-500/10 text-sky-400 border border-sky-500/20' :
+                      'bg-zinc-800 text-zinc-500 border border-zinc-700'
+                    }`}>
+                      {item.status}
+                    </span>
+                  </div>
+
+                  <div class="col-span-2 text-right hidden md:block">
+                    <div class="flex justify-end gap-0.5">
+                      {[1, 2, 3, 4].map((step) => (
+                        <div class={`h-1 w-3 rounded-full ${
+                          item.level === 'Expert' ? 'bg-emerald-500' :
+                          item.level === 'Advanced' && step <= 3 ? 'bg-sky-500' :
+                          item.level === 'Intermediate' && step <= 2 ? 'bg-amber-500' :
+                          'bg-zinc-800'
+                        }`}></div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      ))}
+    </div>
+
+    <div class="mt-20 p-8 border border-dashed border-zinc-800 rounded-xl text-center space-y-4">
+      <p class="font-mono text-xxs uppercase tracking-widest text-zinc-500">
+        // End of Manifest | Total Objects Audited: {stack.reduce((acc, g) => acc + g.items.length, 0)}
+      </p>
+      <a href="/" class="inline-block px-4 py-2 bg-zinc-100 text-black font-mono text-xxs uppercase tracking-widest hover:bg-white transition-colors rounded">
+        Return_to_Home
+      </a>
+    </div>
+  </div>
+</Main>

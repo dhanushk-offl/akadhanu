@@ -1,0 +1,134 @@
+---
+import PageHeader from "../components/PageHeader.astro";
+import { AppConfig } from "../config/AppConfig";
+import Main from "../layouts/Main.astro";
+import aboutData from "../content/about-data.json";
+
+const { experience, education, focus, milestones } = aboutData;
+---
+
+<Main
+  meta={{
+    title: `About me | ${AppConfig.title}`,
+    description: AppConfig.description,
+    image: "/assets/og-images/about.png",
+  }}
+>
+  <div class="pb-8 pt-2">
+    <PageHeader 
+      title="About Me" 
+      emoji="💡" 
+      description="Builder, tinkerer, and lifelong learner."
+    />
+  </div>
+
+  <div class="space-y-12">
+    <!-- Section 01: The Journey -->
+    <section id="journey" class="space-y-4">
+      <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400 block mb-2">[01] The Journey</span>
+      <div class="space-y-4 text-base leading-relaxed text-zinc-600 dark:text-zinc-400">
+        <p>
+          I&apos;m a software developer and creative technologist from India 🇮🇳 with a passion for building 
+          impactful digital experiences. My journey is driven by a deep fascination with how code can solve 
+          complex problems and bring creative visions to life.
+        </p>
+        <p>
+          Over the years, I've developed a strong foundation in building AI stuffs like LLMs, Training Models, Agents & Automations, modern web technologies, primarily focusing 
+          on building scalable solutions and exploring the cutting edge of software development.
+        </p>
+      </div>
+    </section>
+
+    <!-- Section 02: Previous Experience -->
+    <section id="experience" class="space-y-6">
+      <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400 block mb-2">[02] Previous Experience</span>
+      <div class="space-y-8">
+        {experience.map((item) => (
+          <div class="relative pl-6 border-l border-zinc-900 group">
+            <div class="absolute -left-[5px] top-1 size-2 rounded-full bg-zinc-800 group-hover:bg-emerald-500 transition-colors"></div>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-2">
+              <h3 class="font-medium text-zinc-100">{item.role} @ {item.company}</h3>
+              <span class="font-mono text-[10px] text-zinc-500 uppercase">{item.timeline}</span>
+            </div>
+            <p class="text-sm text-zinc-400 leading-relaxed max-w-xl font-mono">
+              {item.description}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Section 03: Current Focus -->
+    <section id="focus" class="space-y-4">
+      <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400 block mb-2">[03] Current Focus</span>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {focus.map((item) => (
+          <a href={item.url} target="_blank" class="plain group block p-4 rounded-lg border border-zinc-900 hover:border-zinc-700 transition-all bg-zinc-900/50 !no-underline">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="font-medium text-zinc-100 group-hover:underline decoration-1 underline-offset-4">{item.title}</h3>
+              <span class={`font-mono text-xxs px-2 py-0.5 rounded-full ${item.status === 'Active' ? 'text-emerald-400 bg-emerald-900/30' : 'text-sky-400 bg-sky-900/30'}`}>
+                {item.status}
+              </span>
+            </div>
+            <p class="text-sm text-zinc-400">
+              {item.description}
+            </p>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- Section 04: Education -->
+    <section id="education" class="space-y-6">
+      <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400 block mb-2">[04] Education</span>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {education.map((item) => (
+          <div class="space-y-1">
+            <h3 class="font-medium text-zinc-100">{item.institution}</h3>
+            <p class="text-xs text-zinc-400 font-mono uppercase tracking-widest">{item.field}</p>
+            <p class="font-mono text-[10px] text-zinc-500 uppercase">{item.year}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Section 05: Beyond Code -->
+    <section id="interests" class="space-y-4">
+      <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400 block mb-2">[05] Beyond Code</span>
+      <div class="space-y-4 text-base leading-relaxed text-zinc-600 dark:text-zinc-400">
+        <p>
+          When I'm away from the keyboard, I'm usually exploring the physical world. I have a deep appreciation for 
+          nature and adventure travel—collecting memories and souvenirs from every new place I visit.
+        </p>
+        <p>
+          Recently, my curiosity has expanded into building SaaS products. I spend my weekends building AI agents, 
+          maintaining a Opensource projects, and curating content for my podcast Idu Namma Tech-u.
+        </p>
+      </div>
+    </section>
+
+    <!-- Section 06: Milestone and Achievements -->
+    <section id="milestones" class="space-y-6">
+      <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400 block mb-2">[06] Milestones & Achievements</span>
+      <div class="space-y-6">
+        {milestones.map((item) => (
+          <div class="flex flex-col sm:flex-row sm:items-start border-l border-zinc-900 pl-6 space-y-2 sm:space-y-0">
+             <div class="flex-grow space-y-1">
+                <h3 class="font-medium text-zinc-100">{item.title}</h3>
+                <p class="text-sm text-zinc-400 leading-relaxed font-mono line-clamp-2">
+                  {item.description}
+                </p>
+             </div>
+             <div class="sm:ml-4 flex-shrink-0">
+                <span class="font-mono text-[10px] text-zinc-500 uppercase tabular-nums">
+                  {item.period}
+                </span>
+             </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  </div>
+</Main>
+  </div>
+</Main>

@@ -1,0 +1,55 @@
+---
+interface Props {
+  book: {
+    title: string;
+    author_name: string | string[];
+    book_large_image_url: string;
+    link: string;
+    isbn?: string;
+    book_published?: string;
+    average_rating?: string;
+  };
+  index: number;
+}
+
+const { book, index } = Astro.props;
+---
+
+<div class="group relative flex flex-col items-center justify-start space-y-4 p-4 transition-all duration-200 overflow-hidden border border-zinc-900 hover:border-zinc-700">
+  <!-- Sliding Background -->
+
+  <div
+    class="h-[180px] w-[130px] rounded bg-cover bg-center bg-no-repeat shadow-lg transition-transform group-hover:scale-105"
+    style={`background-image: url(${book.book_large_image_url})`}
+  >
+    <div class="opacity-0 group-hover:opacity-100 transition-opacity absolute inset-0 bg-black/40 flex items-center justify-center backdrop-blur-[1px]">
+       <a href={book.link} target="_blank" class="px-3 py-1 bg-white text-black font-mono text-xxxs uppercase tracking-widest hover:bg-zinc-200 transition-colors">
+         Access_Data
+       </a>
+    </div>
+  </div>
+
+  <div class="w-full space-y-3 text-center px-2">
+    <h3 class="text-sm font-medium text-zinc-100 line-clamp-2 leading-relaxed h-[42px] flex items-center justify-center">
+      {book.title}
+    </h3>
+
+    <div class="space-y-1 text-[11px] text-zinc-500">
+      <div class="truncate opacity-80 italic">
+        {Array.isArray(book.author_name) ? book.author_name[0] : book.author_name}
+      </div>
+      
+      <div class="flex items-center justify-center gap-3 opacity-60 text-[10px] font-mono">
+        {book.book_published && (
+          <span>{book.book_published}</span>
+        )}
+        {book.average_rating && (
+          <span class="flex items-center gap-1">
+            <span class="text-yellow-500/50">★</span>
+            {book.average_rating}
+          </span>
+        )}
+      </div>
+    </div>
+  </div>
+</div>

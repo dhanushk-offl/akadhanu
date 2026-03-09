@@ -1,0 +1,44 @@
+---
+import PageHeader from "../components/PageHeader.astro";
+import { AppConfig } from "../config/AppConfig";
+import Main from "../layouts/Main.astro";
+import thoughts from "../content/thoughts.json";
+import { format } from "date-fns";
+---
+
+<Main
+  meta={{
+    title: `Thoughts | ${AppConfig.title}`,
+    description: "Curated personal thoughts and professional insights.",
+  }}
+>
+  <div class="pb-8 pt-2">
+    <PageHeader 
+      title="Thoughts" 
+      emoji="🧠" 
+      description="Curated personal thoughts and professional insights."
+    />
+
+    <div class="mt-12 space-y-12">
+      {thoughts.map((item, index) => (
+        <div class="group relative space-y-4 p-6 -mx-6 rounded-xl hover:bg-zinc-900/50 border border-transparent hover:border-zinc-800 transition-all duration-300">
+          <div class="flex items-center justify-between">
+            <span class="font-mono text-xxs uppercase tracking-[0.2em] text-emerald-500">
+              [{String(index + 1).padStart(2, '0')}] {item.category}
+            </span>
+            <span class="font-mono text-[10px] uppercase tracking-widest text-zinc-500 opacity-50">
+              {format(new Date(item.date), 'MMM dd, yyyy')}
+            </span>
+          </div>
+          <p class="text-base sm:text-lg text-zinc-200 leading-relaxed font-mono">
+            {item.thought}
+          </p>
+          <div class="pt-2 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <span class="size-1 rounded-full bg-emerald-500"></span>
+            <span class="text-[9px] font-mono uppercase tracking-[0.3em] text-zinc-600">Secure_Transmission_Logged</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</Main>

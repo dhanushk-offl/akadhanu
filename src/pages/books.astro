@@ -1,0 +1,34 @@
+---
+import PageHeader from "../components/PageHeader.astro";
+import Main from "../layouts/Main.astro";
+import booksData from "../content/books-with-isbn.json";
+import BookItem from "../components/books/BookItem.astro";
+
+interface Book {
+  title: string;
+  author_name: string | string[];
+  book_large_image_url: string;
+  link: string;
+}
+
+// Clean the book data to only include necessary fields
+const books = booksData.map((book) => ({
+  title: book.title,
+  author_name: book.author_name,
+  book_large_image_url: book.book_large_image_url,
+  link: book.link,
+}));
+---
+
+<Main meta={{ title: "Books", description: "Books that I read", image: "/assets/og-images/books.png" }}>
+  <div class="pb-8 pt-2">
+    <PageHeader
+      title="Books that I read"
+      emoji="📖"
+      description="Mystery, Thriller, Fiction, Non-Fiction, Self-Help, and more."
+    />
+    <div class="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {books.map((book, index) => <BookItem book={book} index={index} />)}
+    </div>
+  </div>
+</Main>

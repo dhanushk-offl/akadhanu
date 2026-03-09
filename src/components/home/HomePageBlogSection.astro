@@ -1,0 +1,77 @@
+---
+import Parser from "rss-parser";
+import { format } from "date-fns";
+
+const parser = new Parser();
+let posts: any[] = [];
+try {
+  const feed = await parser.parseURL("https://medium.com/feed/@itzmedhanu");
+  posts = feed.items.sort(
+    (a, b) => new Date(b.pubDate || 0).valueOf() - new Date(a.pubDate || 0).valueOf()
+  ).slice(0, 5).map(item => {
+    const slug = (item.title || '')
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, '')
+      .replace(/[\s_-]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    
+    return {
+      title: item.title || '',
+      link: item.link || '',
+      pubDate: item.pubDate || '',
+      slug: slug,
+    };
+  });
+} catch (e) {
+  console.error("Medium feed fetch failed", e);
+}
+---
+
+<div class="flex flex-col gap-1">
+  {posts.length > 0 ? (
+    posts.map((post, index) => (
+      <a 
+        href={`/blog/${post.slug}`}
+        class="group relative flex items-baseline gap-4 p-2 pr-8 -mx-2 rounded hover:bg-zinc-900/50 transition-colors !no-underline"
+      >
+        <span class="font-mono text-xxxs text-zinc-600 w-8">
+          [0x{(index + 1).toString(16).toUpperCase().padStart(2, '0')}]
+        </span>
+        
+        <div class="flex-1 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-1 sm:gap-4">
+          <h3 class="text-sm font-medium text-zinc-300 group-hover:text-zinc-100 transition-colors !no-underline">
+            {post.title}
+          </h3>
+          
+          <div class="flex items-center gap-3 shrink-0">
+            <span class="hidden sm:inline-block h-px w-8 bg-zinc-800"></span>
+            <time 
+              datetime={post.pubDate} 
+              class="font-mono text-xxxs text-zinc-500 whitespace-nowrap"
+            >
+              {post.pubDate ? format(new Date(post.pubDate), 'yyyy-MM-dd') : 'N/A'}
+            </time>
+          </div>
+        </div>
+
+        <span class="opacity-0 group-hover:opacity-100 transition-opacity text-emerald-500 font-mono text-xs absolute right-2 top-1/2 -translate-y-1/2 hidden sm:block">
+          ←
+        </span>
+      </a>
+    ))
+  ) : (
+    <div class="p-4 border border-dashed border-zinc-800 rounded text-center">
+      <p class="text-xs font-mono text-zinc-400 uppercase tracking-widest">System Log Empty</p>
+    </div>
+  )}
+  
+  <div class="pt-6">
+    <a
+      class="group inline-flex items-center gap-2 font-mono text-xxs uppercase tracking-widest text-zinc-400 hover:text-zinc-100 transition-colors"
+      href="/blog"
+    >
+      <span class="text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity">></span>
+      [View Archive]
+    </a>
+  </div>
+</div>

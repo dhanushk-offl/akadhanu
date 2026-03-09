@@ -1,0 +1,66 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import Main from "../../layouts/Main.astro";
+import { AppConfig } from "../../config/AppConfig";
+import PageHeader from "../../components/PageHeader.astro";
+import PostCard from "../../components/blog/PostCard.astro";
+
+import Parser from "rss-parser";
+
+const parser = new Parser();
+const feed = await parser.parseURL("https://medium.com/feed/@itzmedhanu");
+const posts = feed.items.sort(
+  (a, b) => new Date(b.pubDate || 0).valueOf() - new Date(a.pubDate || 0).valueOf()
+).map(item => {
+  const slug = (item.title || '')
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  
+  return {
+    title: item.title || '',
+    link: item.link || '',
+    slug: slug,
+    pubDate: item.pubDate || '',
+    contentSnippet: item.contentSnippet || '',
+    categories: item.categories || [],
+  };
+});
+
+---
+
+<Main
+  meta={{
+    title: `Blog | ${AppConfig.title}`,
+    description: AppConfig.description,
+  }}
+>
+  <div class="pb-8 pt-2">
+    <PageHeader
+      title="Writing"
+      emoji="📝"
+      description="System logs on life, SaaS, and engineering."
+    />
+
+    <div class="mt-12 space-y-1">
+      {posts.map((post: any, idx: number) => (
+        <PostCard post={post} index={idx} />
+      ))}
+    </div>
+
+    <div class="mt-20 text-center group">
+      <p class="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-500">
+        Want to read more? 
+        <a 
+          href="https://itzmedhanu.medium.com" 
+          target="_blank" 
+          class="text-emerald-500 underline decoration-emerald-500/30 underline-offset-8 hover:decoration-emerald-500 transition-all duration-300 inline-flex items-center gap-2"
+        >
+          Catch me on Medium and subscribe
+          <span class="text-xs transition-transform group-hover:translate-x-1 group-hover:-translate-y-0.5">↗</span>
+        </a>
+      </p>
+    </div>
+  </div>
+</Main>

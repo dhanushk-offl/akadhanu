@@ -1,0 +1,236 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { ClientRouter } from 'astro:transitions';
+import ThreeAnimation from "../components/ThreeAnimation.astro";
+
+interface Props {
+  meta: {
+    title: string;
+    description: string;
+    image?: string;
+  };
+}
+
+const { meta } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="dark" style="color-scheme: dark;">
+  <head>
+    <ClientRouter />
+    <BaseHead title={meta.title} description={meta.description} image={meta.image} />
+  </head>
+  <body class="flex min-h-screen flex-col bg-black text-zinc-200 relative overflow-x-hidden">
+    <!-- Sitewide Abstract Background Animation -->
+    <div class="fixed inset-0 -z-10 h-screen w-full pointer-events-none opacity-[0.15]" transition:persist>
+      <ThreeAnimation />
+    </div>
+    <div id="help-modal" class="fixed inset-0 z-[300] bg-black/60 backdrop-blur-[2px] hidden items-center justify-center p-6 text-zinc-400 font-mono">
+      <div class="w-full max-w-lg border-2 border-zinc-100 bg-black p-1 shadow-2xl">
+        <div class="border border-zinc-100/30 p-6 space-y-8 relative">
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-black px-4 text-xs font-bold uppercase tracking-[0.2em] text-zinc-100">
+            [ system_help_v1.0 ]
+          </div>
+          <div class="space-y-2 text-center pt-2">
+            <p class="text-[10px] uppercase tracking-widest opacity-70 text-zinc-500">Execute command sequence to navigate system</p>
+          </div>
+          <div class="grid grid-cols-2 gap-12 text-zinc-300">
+            <div class="space-y-4">
+              <div class="border-b border-zinc-100/20 pb-1 flex justify-between">
+                <span class="text-[10px] uppercase font-bold text-zinc-500">Directories</span>
+                <span class="text-[10px] uppercase font-bold text-zinc-100">CMD</span>
+              </div>
+              <div class="space-y-2">
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">/root</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">1</span>
+                </div>
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">/about</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">2</span>
+                </div>
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">/blog</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">3</span>
+                </div>
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">/projects</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">4</span>
+                </div>
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">/books</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">5</span>
+                </div>
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">/uses</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">US</span>
+                </div>
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">/books</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">6</span>
+                </div>
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">/thoughts</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">7</span>
+                </div>
+              </div>
+            </div>
+            <div class="space-y-4">
+              <div class="border-b border-zinc-100/20 pb-1 flex justify-between">
+                <span class="text-[10px] uppercase font-bold text-zinc-500">Functions</span>
+                <span class="text-[10px] uppercase font-bold text-zinc-100">CMD</span>
+              </div>
+              <div class="space-y-2">
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">tech_manifest</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">STK</span>
+                </div>
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">press_kit_hd</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">PK</span>
+                </div>
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">talks</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">TK</span>
+                </div>
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">others</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">OT</span>
+                </div>
+                <div class="flex justify-between items-center group/item text-xs">
+                  <span class="opacity-70 group-hover/item:opacity-100 transition-opacity">thoughts</span>
+                  <span class="text-zinc-100 font-bold bg-zinc-100/10 px-1.5 rounded">TH</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="pt-4 border-t border-zinc-100/20 flex justify-between items-center">
+            <span class="text-[9px] uppercase tracking-tighter opacity-30 font-mono italic text-zinc-100">Secure transmission active...</span>
+            <span class="text-[10px] uppercase font-bold animate-pulse text-zinc-100">Press [ESC] to Exit</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mx-auto w-full max-w-3xl px-6 lg:px-8">
+      <div class="flex min-h-screen flex-col">
+        <Header />
+        <main class="flex-grow py-8 md:py-12">
+          <slot />
+        </main>
+        <Footer />
+      </div>
+    </div>
+
+    <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-[200] px-4 py-2 bg-zinc-900 text-white dark:bg-zinc-100 dark:text-black font-mono text-xxxs uppercase tracking-widest rounded shadow-2xl transition-all duration-300 -translate-y-20 opacity-0 flex items-center gap-3 border border-white/10">
+      <span class="text-emerald-500">$</span>
+      <span id="toast-message"></span>
+    </div>
+
+    <div id="key-indicator" class="fixed bottom-8 right-8 pointer-events-none z-[100] font-mono text-xl text-zinc-400 dark:text-zinc-600 opacity-0 transition-opacity duration-200">
+      <span class="text-emerald-500 mr-2">></span><span id="key-text" class="uppercase font-bold text-zinc-100"></span>
+    </div>
+
+    <script>
+      let keyBuffer = "";
+      let bufferTimeout: any;
+
+      function toggleHelp() {
+        const modal = document.getElementById('help-modal');
+        if (modal) {
+          const isHidden = modal.classList.contains('hidden');
+          modal.classList.toggle('hidden');
+          modal.classList.toggle('flex');
+          document.body.style.overflow = isHidden ? 'hidden' : '';
+        }
+      }
+
+      (window as any).showToast = function(message: string) {
+        const toast = document.getElementById('toast');
+        const toastMsg = document.getElementById('toast-message');
+        if (toast && toastMsg) {
+          toastMsg.textContent = message;
+          toast.classList.remove('-translate-y-20', 'opacity-0');
+          toast.classList.add('translate-y-0', 'opacity-100');
+          clearTimeout((window as any).toastTimeout);
+          (window as any).toastTimeout = setTimeout(() => {
+            toast.classList.remove('translate-y-0', 'opacity-100');
+            toast.classList.add('-translate-y-20', 'opacity-0');
+          }, 2000);
+        }
+      }
+
+      function showKeyIndicator(isError = false) {
+        const el = document.getElementById('key-indicator');
+        const textEl = document.getElementById('key-text');
+        if (el && textEl) {
+          textEl.textContent = keyBuffer + (isError ? ' - unknown command' : '');
+          el.classList.remove('opacity-0');
+          el.classList.add('opacity-100');
+          if (isError) { textEl.classList.add('text-red-500'); } 
+          else { textEl.classList.remove('text-red-500'); }
+          clearTimeout((window as any).keyHintTimeout);
+          (window as any).keyHintTimeout = setTimeout(() => {
+            el.classList.remove('opacity-100');
+            el.classList.add('opacity-0');
+          }, isError ? 1500 : 800);
+        }
+      }
+
+      function handleShortcuts(e: KeyboardEvent) {
+        if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || e.metaKey || e.ctrlKey) {
+          return;
+        }
+
+        const key = e.key.toLowerCase();
+
+        if (key === 'escape') {
+          if (!document.getElementById('help-modal')?.classList.contains('hidden')) { toggleHelp(); return; }
+        }
+        
+        if (!/^[a-z0-9]$/.test(key)) return;
+
+        keyBuffer += key;
+        showKeyIndicator();
+        clearTimeout(bufferTimeout);
+        bufferTimeout = setTimeout(() => {
+          if (keyBuffer === 'man') { toggleHelp(); keyBuffer = ""; return; }
+
+          if (keyBuffer.length > 0) {
+            const isHomePage = window.location.pathname === '/';
+            const navMap: Record<string, string> = {
+              '01': '/', '1': '/', '02': '/about', '2': '/about', '03': '/blog', '3': '/blog',
+              '04': '/projects', '4': '/projects', '05': '/books', '5': '/books', 
+              'us': '/uses', 'th': '/thoughts', 'tk': '/talks', 'ot': '/others', 'pk': '/press-kit',
+              'stk': '/stack', '0': 'section-0'
+            };
+
+            if (navMap[keyBuffer]) {
+              const target = navMap[keyBuffer];
+              if (target === 'section-0' && isHomePage) {
+                document.getElementById('section-0')?.scrollIntoView({ behavior: 'smooth' });
+              } else if (target.startsWith('http')) {
+                window.open(target, '_blank');
+              } else if (window.location.pathname === target) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              } else {
+                window.location.href = target;
+              }
+              keyBuffer = "";
+            } else {
+              const possibleStarts = ['s', 'm'];
+              if (keyBuffer.length >= 3 || (keyBuffer.length === 2 && !possibleStarts.includes(keyBuffer[0]))) {
+                showKeyIndicator(true);
+                keyBuffer = "";
+              }
+            }
+          }
+        }, 400);
+      }
+
+      document.addEventListener('keydown', handleShortcuts);
+    </script>
+  </body>
+</html>
