@@ -13,7 +13,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const { title, description, image = "/og-meta.png" } = Astro.props;
 
 // Ensure we have a fully qualified absolute URL for the social image
-const socialImageURL = new URL(image, Astro.site || AppConfig.url).toString();
+// We use AppConfig.url as a reliable fallback for the base domain
+const baseUrl = Astro.site ? Astro.site.origin : AppConfig.url;
+const cleanImagePath = image.startsWith('/') ? image.slice(1) : image;
+const socialImageURL = new URL(cleanImagePath, baseUrl).toString();
 ---
 
 <!-- Global Metadata -->
