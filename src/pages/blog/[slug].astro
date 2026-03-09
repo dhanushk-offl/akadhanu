@@ -30,7 +30,7 @@ const content = post['content:encoded'] || post.content || post.contentSnippet;
 
 // Extract first image from content for OG image
 const imgMatch = content?.match(/<img[^>]+src="([^">]+)"/);
-const ogImage = imgMatch ? imgMatch[1] : "/og-meta.png";
+const ogImage = imgMatch ? imgMatch[1] : "/assets/og-images/blog.png";
 ---
 
 <Main
