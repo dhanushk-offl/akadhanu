@@ -27,12 +27,17 @@ const pubDate = new Date(post.pubDate);
 
 // Extract content from Medium (it usually comes in content:encoded or content)
 const content = post['content:encoded'] || post.content || post.contentSnippet;
+
+// Extract first image from content for OG image
+const imgMatch = content?.match(/<img[^>]+src="([^">]+)"/);
+const ogImage = imgMatch ? imgMatch[1] : "/og-meta.png";
 ---
 
 <Main
   meta={{
     title: `${post.title} | Blog | ${AppConfig.title}`,
     description: post.contentSnippet?.slice(0, 160) || post.title,
+    image: ogImage,
   }}
   hideBackground={true}
 >
