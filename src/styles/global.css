@@ -18,7 +18,7 @@
   --text-sm: 0.875rem;
   --text-sm--line-height: 1.25rem;
   --text-base: 0.9375rem;
-  --text-base--line-height: 1.4rem;
+  --text-base--line-height: 1.6rem;
   --text-lg: 1rem;
   --text-lg--line-height: 1.5rem;
   --text-xl: 1.125rem;
@@ -41,7 +41,7 @@
   }
 
   body {
-    @apply font-sans antialiased bg-black text-zinc-200;
+    @apply font-sans antialiased bg-black text-zinc-300;
   }
 
   h1,
@@ -50,7 +50,7 @@
   h4,
   h5,
   h6 {
-    @apply font-semibold tracking-tight text-zinc-100;
+    @apply font-normal tracking-tight text-zinc-200;
   }
 }
 

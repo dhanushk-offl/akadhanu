@@ -34,6 +34,7 @@ const content = post['content:encoded'] || post.content || post.contentSnippet;
     title: `${post.title} | Blog | ${AppConfig.title}`,
     description: post.contentSnippet?.slice(0, 160) || post.title,
   }}
+  hideBackground={true}
 >
   <article class="max-w-2xl mx-auto py-8">
     <header class="mb-12 space-y-4">

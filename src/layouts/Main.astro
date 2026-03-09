@@ -11,9 +11,10 @@ interface Props {
     description: string;
     image?: string;
   };
+  hideBackground?: boolean;
 }
 
-const { meta } = Astro.props;
+const { meta, hideBackground = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -24,9 +25,11 @@ const { meta } = Astro.props;
   </head>
   <body class="flex min-h-screen flex-col bg-black text-zinc-200 relative overflow-x-hidden">
     <!-- Sitewide Abstract Background Animation -->
-    <div class="fixed inset-0 -z-10 h-screen w-full pointer-events-none opacity-[0.15]" transition:persist>
-      <ThreeAnimation />
-    </div>
+    {!hideBackground && (
+      <div class="fixed inset-0 -z-10 h-screen w-full pointer-events-none opacity-[0.25]" transition:persist>
+        <ThreeAnimation />
+      </div>
+    )}
     <div id="help-modal" class="fixed inset-0 z-[300] bg-black/60 backdrop-blur-[2px] hidden items-center justify-center p-6 text-zinc-400 font-mono">
       <div class="w-full max-w-lg border-2 border-zinc-100 bg-black p-1 shadow-2xl">
         <div class="border border-zinc-100/30 p-6 space-y-8 relative">

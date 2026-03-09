@@ -19,20 +19,21 @@
     if (!canvas) return;
 
     camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 5;
+    camera.position.z = 2; // Closer to see the line better
 
     scene = new THREE.Scene();
 
-    const geometry = new THREE.PlaneGeometry(20, 20, 40, 40);
+    const geometry = new THREE.PlaneGeometry(22, 1.5, 120, 20); // More segments for smoother flow
     const material = new THREE.MeshBasicMaterial({ 
       color: 0x10b981, 
       wireframe: true,
       transparent: true,
-      opacity: 0.1
+      opacity: 0.2
     });
 
     mesh = new THREE.Mesh(geometry, material);
-    mesh.rotation.x = -Math.PI / 3;
+    mesh.rotation.x = 0; 
+    mesh.position.y = 0; 
     scene.add(mesh);
 
     renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
@@ -56,28 +57,43 @@
     requestAnimationFrame(animate);
     if (!mesh || !renderer || !scene || !camera) return;
     
-    frame += 0.01;
+    frame += 0.008; // Adjusted speed
 
     const positions = (mesh.geometry as THREE.BufferGeometry).attributes.position;
     for (let i = 0; i < positions.count; i++) {
         const x = positions.getX(i);
-        const y = positions.getY(i);
-        const z = Math.sin(x + frame) * Math.cos(y + frame) * 0.5;
+        const originalY = (Math.floor(i / 121) / 20) * 1.5 - 0.75; // Calculate original vertical position relative to ribbon width
+        
+        // Depth wave (Z) - Combining waves for complexity
+        const z = Math.sin(x * 0.4 + frame) * 0.15 + 
+                  Math.cos(x * 0.7 - frame * 0.5) * 0.05;
         positions.setZ(i, z);
+        
+        // Vertical wave (Y) - Organic "flowing ribbon" motion
+        const yWave = Math.sin(x * 0.5 + frame) * 0.4 + 
+                      Math.sin(x * 0.2 + frame * 0.8) * 0.2;
+        positions.setY(i, originalY + yWave);
     }
     positions.needsUpdate = true;
 
-    mesh.rotation.z += 0.001;
     renderer.render(scene, camera);
   }
 
   // Robust initialization
-  if (document.readyState === 'complete') {
-    init();
-  } else {
-    window.addEventListener('load', init);
+  function start() {
+    if (document.readyState === 'complete') {
+      init();
+    } else {
+      window.addEventListener('load', init);
+    }
   }
 
+  // Initial call
+  start();
+
   // Handle Astro view transitions
-  document.addEventListener('astro:page-load', init);
+  document.addEventListener('astro:page-load', () => {
+    initialized = false; // Reset for page transitions if canvas is re-rendered
+    init();
+  });
 </script>
