@@ -22,6 +22,18 @@
         "logo": "/assets/images/aspec.png"
     },
     {
+        "title": "Prev",
+        "description": "Local first Preview social link cards instantly before deployment.",
+        "link": "https://prevu.pages.dev/",
+        "tags": [
+            "Tool",
+            "Rust",
+            "Web"
+        ],
+        "year": "2026",
+        "logo": "/assets/images/prev.png"
+    },
+    {
         "title": "Clynk",
         "description": "A Secure, Open-Source Clip Syncronization for Android & PC.",
         "link": "https://github.com/dhanushk-offl/clynk",
