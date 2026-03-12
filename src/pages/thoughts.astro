@@ -2,8 +2,24 @@
 import PageHeader from "../components/PageHeader.astro";
 import { AppConfig } from "../config/AppConfig";
 import Main from "../layouts/Main.astro";
-import thoughts from "../content/thoughts.json";
+import localThoughts from "../content/thoughts.json";
 import { format } from "date-fns";
+
+const THOUGHTS_URL = "https://cdn.jsdelivr.net/gh/dhanushk-offl/is-data@master/thoughts.json";
+
+let thoughts = localThoughts;
+
+try {
+  const response = await fetch(THOUGHTS_URL);
+  if (response.ok) {
+    const remoteThoughts = await response.json();
+    if (Array.isArray(remoteThoughts)) {
+      thoughts = remoteThoughts;
+    }
+  }
+} catch {
+  // Fall back to local content when remote fetch is unavailable.
+}
 ---
 
 <Main

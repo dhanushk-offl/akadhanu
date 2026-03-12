@@ -2,7 +2,23 @@
 import { Image } from 'astro:assets';
 import PageHeader from '../components/PageHeader.astro';
 import Main from '../layouts/Main.astro';
-import projects from '../content/projects.json';
+import localProjects from '../content/projects.json';
+
+const PROJECTS_URL = 'https://cdn.jsdelivr.net/gh/dhanushk-offl/is-data@master/projects.json';
+
+let projects = localProjects;
+
+try {
+  const response = await fetch(PROJECTS_URL);
+  if (response.ok) {
+    const remoteProjects = await response.json();
+    if (Array.isArray(remoteProjects)) {
+      projects = remoteProjects;
+    }
+  }
+} catch {
+  // Fall back to local content when remote fetch is unavailable.
+}
 ---
 
 <Main meta={{ title: 'Projects', description: 'Selected Works' }}>
