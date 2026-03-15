@@ -15,7 +15,7 @@ const greetings = [
 <div class="h-8 flex items-center">
   <span
     id="greeting-text"
-    class="font-mono text-xl font-medium uppercase tracking-[0.2em] text-emerald-500 dark:text-emerald-400 whitespace-nowrap"
+    class="font-mono text-xl font-medium uppercase tracking-[0.2em] text-zinc-900 dark:text-zinc-100 whitespace-nowrap"
     data-greetings={JSON.stringify(greetings.map(g => g.text))}
   >
     HELLO
@@ -68,7 +68,7 @@ const greetings = [
             char = this.randomChar();
             this.queue[i].char = char;
           }
-          output += `<span class="opacity-50 text-emerald-600/50">${char}</span>`;
+          output += `<span class="opacity-50 text-zinc-600/50 dark:text-zinc-400/40">${char}</span>`;
         } else {
           output += from;
         }
