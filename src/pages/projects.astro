@@ -1,24 +1,7 @@
 ---
-import { Image } from 'astro:assets';
 import PageHeader from '../components/PageHeader.astro';
 import Main from '../layouts/Main.astro';
 import localProjects from '../content/projects.json';
-
-const PROJECTS_URL = 'https://cdn.jsdelivr.net/gh/dhanushk-offl/is-data@master/projects.json';
-
-let projects = localProjects;
-
-try {
-  const response = await fetch(PROJECTS_URL);
-  if (response.ok) {
-    const remoteProjects = await response.json();
-    if (Array.isArray(remoteProjects)) {
-      projects = remoteProjects;
-    }
-  }
-} catch {
-  // Fall back to local content when remote fetch is unavailable.
-}
 ---
 
 <Main meta={{ title: 'Projects', description: 'Selected Works' }}>
@@ -27,8 +10,8 @@ try {
     description="A selection of things I've built."
   />
 
-  <div class="flex flex-col gap-4">
-    {projects.map((project, index) => (
+  <div id="projects-list" class="flex flex-col gap-4">
+    {localProjects.map((project, index) => (
       <a 
         href={project.link}
         target="_blank"
@@ -60,3 +43,91 @@ try {
     ))}
   </div>
 </Main>
+
+<script>
+  const PROJECTS_URL = "https://cdn.jsdelivr.net/gh/dhanushk-offl/is-data@master/projects.json";
+
+  type Project = {
+    title: string;
+    year: string;
+    description: string;
+    link: string;
+    tags: string[];
+  };
+
+  function escapeHtml(value: string): string {
+    return value
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
+  }
+
+  function projectCardMarkup(project: Project): string {
+    const tags = Array.isArray(project.tags) ? project.tags : [];
+    return `
+      <a
+        href="${escapeHtml(project.link || "#")}"
+        target="_blank"
+        class="plain group flex flex-col sm:flex-row gap-6 p-6 rounded-2xl border border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 hover:bg-zinc-50 dark:hover:bg-zinc-900 hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-sm transition-all duration-300 transform hover:-translate-y-1"
+      >
+        <div class="flex-grow space-y-3">
+          <div class="flex justify-between items-start">
+            <h3 class="font-mono text-lg font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-black dark:group-hover:text-white transition-colors">
+              ${escapeHtml(project.title || "Untitled")}
+            </h3>
+            <span class="font-mono text-[10px] text-zinc-400 dark:text-zinc-600 group-hover:text-zinc-500 dark:group-hover:text-zinc-400 transition-colors shrink-0 ml-4 pt-1">
+              ${escapeHtml(project.year || "")}
+            </span>
+          </div>
+          <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-2xl group-hover:text-zinc-700 dark:group-hover:text-zinc-300 transition-colors">
+            ${escapeHtml(project.description || "")}
+          </p>
+          <div class="flex gap-2 flex-wrap pt-2">
+            ${tags
+              .map(
+                (tag) => `
+                  <span class="font-mono text-[10px] uppercase tracking-wider text-zinc-400 dark:text-zinc-500 bg-zinc-50/50 dark:bg-zinc-800/30 px-2 py-0.5 rounded border border-zinc-100 dark:border-zinc-800/50 group-hover:border-zinc-200 dark:group-hover:border-zinc-700 transition-colors">
+                    ${escapeHtml(String(tag))}
+                  </span>
+                `
+              )
+              .join("")}
+          </div>
+        </div>
+      </a>
+    `;
+  }
+
+  function isProject(item: unknown): item is Project {
+    if (!item || typeof item !== "object") return false;
+    const project = item as Record<string, unknown>;
+    return (
+      typeof project.title === "string" &&
+      typeof project.description === "string" &&
+      typeof project.link === "string" &&
+      typeof project.year === "string" &&
+      Array.isArray(project.tags)
+    );
+  }
+
+  async function hydrateProjects(): Promise<void> {
+    const container = document.querySelector<HTMLElement>("#projects-list");
+    if (!container) return;
+
+    try {
+      const response = await fetch(PROJECTS_URL, { cache: "no-store" });
+      if (!response.ok) return;
+      const data: unknown = await response.json();
+      if (!Array.isArray(data)) return;
+      const remoteProjects = data.filter(isProject);
+      if (!remoteProjects.length) return;
+      container.innerHTML = remoteProjects.map(projectCardMarkup).join("");
+    } catch {
+      // Keep local rendered content when remote fetch fails.
+    }
+  }
+
+  hydrateProjects();
+</script>

@@ -3,23 +3,15 @@ import PageHeader from "../components/PageHeader.astro";
 import { AppConfig } from "../config/AppConfig";
 import Main from "../layouts/Main.astro";
 import localThoughts from "../content/thoughts.json";
-import { format } from "date-fns";
-
-const THOUGHTS_URL = "https://cdn.jsdelivr.net/gh/dhanushk-offl/is-data@master/thoughts.json";
-
-let thoughts = localThoughts;
-
-try {
-  const response = await fetch(THOUGHTS_URL);
-  if (response.ok) {
-    const remoteThoughts = await response.json();
-    if (Array.isArray(remoteThoughts)) {
-      thoughts = remoteThoughts;
-    }
-  }
-} catch {
-  // Fall back to local content when remote fetch is unavailable.
-}
+const formatThoughtDate = (value: string): string => {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "2-digit",
+    year: "numeric",
+  });
+};
 ---
 
 <Main
@@ -35,14 +27,14 @@ try {
       description="Curated personal thoughts and professional insights."
     />
 
-    <div class="mt-12 space-y-12">
-      {thoughts.map((item, index) => (
+    <div id="thoughts-list" class="mt-12 space-y-12">
+      {localThoughts.map((item, index) => (
         <div
           class="group relative space-y-4 p-6 -mx-6 rounded-xl hover:bg-zinc-900/50 border border-transparent hover:border-zinc-800 transition-all duration-300"
           data-thought-card
           data-thought={item.thought}
           data-category={item.category}
-          data-date={format(new Date(item.date), 'MMM dd, yyyy')}
+          data-date={formatThoughtDate(item.date)}
           data-index={String(index + 1).padStart(2, '0')}
         >
           <div class="flex items-center justify-between">
@@ -50,7 +42,7 @@ try {
               [{String(index + 1).padStart(2, '0')}] {item.category}
             </span>
             <span class="font-mono text-[10px] uppercase tracking-widest text-zinc-500 opacity-50">
-              {format(new Date(item.date), 'MMM dd, yyyy')}
+              {formatThoughtDate(item.date)}
             </span>
           </div>
           <p class="text-base sm:text-lg text-zinc-200 leading-relaxed font-mono">
@@ -135,14 +127,149 @@ try {
 </Main>
 
 <script>
+  const THOUGHTS_URL = "https://cdn.jsdelivr.net/gh/dhanushk-offl/is-data@master/thoughts.json";
   type ThoughtCard = {
     thought: string;
     category: string;
     date: string;
     index: string;
   };
+  type ThoughtItem = {
+    thought: string;
+    category: string;
+    date: string;
+  };
   const MIN_IMAGE_BYTES = 250 * 1024;
   const MAX_IMAGE_BYTES = 500 * 1024;
+  let thoughtCards = document.querySelectorAll<HTMLElement>("[data-thought-card]");
+
+  function escapeHtml(value: string): string {
+    return value
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
+  }
+
+  function formatThoughtDate(value: string): string {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return value;
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+    });
+  }
+
+  function isThoughtItem(item: unknown): item is ThoughtItem {
+    if (!item || typeof item !== "object") return false;
+    const thought = item as Record<string, unknown>;
+    return (
+      typeof thought.thought === "string" &&
+      typeof thought.category === "string" &&
+      typeof thought.date === "string"
+    );
+  }
+
+  function thoughtCardMarkup(item: ThoughtItem, index: number): string {
+    const idx = String(index + 1).padStart(2, "0");
+    const formattedDate = formatThoughtDate(item.date);
+    return `
+      <div
+        class="group relative space-y-4 p-6 -mx-6 rounded-xl hover:bg-zinc-900/50 border border-transparent hover:border-zinc-800 transition-all duration-300"
+        data-thought-card
+        data-thought="${escapeHtml(item.thought)}"
+        data-category="${escapeHtml(item.category)}"
+        data-date="${escapeHtml(formattedDate)}"
+        data-index="${idx}"
+      >
+        <div class="flex items-center justify-between">
+          <span class="font-mono text-xxs uppercase tracking-[0.2em] text-emerald-500">
+            [${idx}] ${escapeHtml(item.category)}
+          </span>
+          <span class="font-mono text-[10px] uppercase tracking-widest text-zinc-500 opacity-50">
+            ${escapeHtml(formattedDate)}
+          </span>
+        </div>
+        <p class="text-base sm:text-lg text-zinc-200 leading-relaxed font-mono">
+          ${escapeHtml(item.thought)}
+        </p>
+        <div class="pt-2 flex flex-wrap items-center gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+          <button
+            class="thought-share-toggle size-8 rounded-md border border-zinc-800 bg-zinc-900/80 text-zinc-200 hover:bg-zinc-800 transition-colors inline-flex items-center justify-center"
+            data-action="toggle-share"
+            type="button"
+            aria-label="Share"
+            title="Share"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="18" cy="5" r="3"></circle>
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="19" r="3"></circle>
+              <line x1="8.6" y1="13.5" x2="15.4" y2="17.5"></line>
+              <line x1="15.4" y1="6.5" x2="8.6" y2="10.5"></line>
+            </svg>
+          </button>
+          <div class="hidden items-center gap-2" data-share-menu>
+            <button
+              class="thought-action size-8 rounded-md border border-zinc-800 bg-zinc-900/80 text-zinc-200 hover:bg-zinc-800 transition-colors inline-flex items-center justify-center"
+              data-action="download-image"
+              type="button"
+              aria-label="Download image"
+              title="Download image"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+            </button>
+            <button
+              class="thought-action size-8 rounded-md border border-zinc-800 bg-zinc-900/80 text-zinc-200 hover:bg-zinc-800 transition-colors inline-flex items-center justify-center text-[11px] font-semibold"
+              data-action="share-x"
+              type="button"
+              aria-label="Share on X"
+              title="Share on X"
+            >
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true">
+                <path d="M18.244 2h3.308l-7.227 8.26L23 22h-6.735l-5.278-6.89L4.96 22H1.65l7.73-8.835L1 2h6.907l4.77 6.232L18.244 2Zm-1.161 18h1.833L6.91 3.895H4.943L17.083 20Z"></path>
+              </svg>
+            </button>
+            <button
+              class="thought-action size-8 rounded-md border border-zinc-800 bg-zinc-900/80 text-zinc-200 hover:bg-zinc-800 transition-colors inline-flex items-center justify-center text-[11px] font-semibold"
+              data-action="share-reddit"
+              type="button"
+              aria-label="Share on Reddit"
+              title="Share on Reddit"
+            >
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
+                <circle cx="12" cy="13.5" r="5.5"></circle>
+                <circle cx="9.8" cy="13.2" r="0.8" fill="#0b0b0b"></circle>
+                <circle cx="14.2" cy="13.2" r="0.8" fill="#0b0b0b"></circle>
+                <path d="M9.4 15.7c.7.5 1.6.8 2.6.8s1.9-.3 2.6-.8" stroke="#0b0b0b" stroke-width="1.2" fill="none" stroke-linecap="round"></path>
+                <circle cx="18.4" cy="9.8" r="1.4"></circle>
+                <path d="M13.8 8.2l1.1-3.2 2.3.5" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round"></path>
+              </svg>
+            </button>
+            <button
+              class="thought-action size-8 rounded-md border border-zinc-800 bg-zinc-900/80 text-zinc-200 hover:bg-zinc-800 transition-colors inline-flex items-center justify-center text-[10px] font-semibold"
+              data-action="share-linkedin"
+              type="button"
+              aria-label="Share on LinkedIn"
+              title="Share on LinkedIn"
+            >
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true">
+                <path d="M4.98 3.5A2.48 2.48 0 0 0 2.5 5.98c0 1.36 1.1 2.47 2.48 2.47s2.48-1.1 2.48-2.47A2.48 2.48 0 0 0 4.98 3.5ZM2.9 9.5h4.2V21H2.9V9.5ZM9.4 9.5h4.02v1.57h.06c.56-1.05 1.92-2.16 3.95-2.16 4.22 0 5 2.78 5 6.39V21h-4.2v-4.96c0-1.18-.02-2.7-1.65-2.7-1.65 0-1.9 1.29-1.9 2.62V21H9.4V9.5Z"></path>
+              </svg>
+            </button>
+          </div>
+          <span class="size-1 rounded-full bg-emerald-500 ml-1"></span>
+          <span class="text-[9px] font-mono uppercase tracking-[0.3em] text-zinc-600" data-share-status>Secure_Transmission_Logged</span>
+        </div>
+      </div>
+    `;
+  }
 
   function wrapText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] {
     const words = text.split(/\s+/);
@@ -334,8 +461,6 @@ try {
     if (target) window.open(target, "_blank", "noopener,noreferrer");
   }
 
-  const thoughtCards = document.querySelectorAll<HTMLElement>("[data-thought-card]");
-
   function closeShareMenus(except?: HTMLElement): void {
     thoughtCards.forEach((card) => {
       if (except && card === except) return;
@@ -346,40 +471,67 @@ try {
     });
   }
 
-  thoughtCards.forEach((cardEl) => {
-    const shareToggle = cardEl.querySelector<HTMLButtonElement>(".thought-share-toggle");
-    if (shareToggle) {
-      shareToggle.addEventListener("click", () => {
-        const menu = cardEl.querySelector<HTMLElement>("[data-share-menu]");
-        if (!menu) return;
-        const opening = menu.classList.contains("hidden");
-        closeShareMenus(cardEl);
-        if (opening) {
-          menu.classList.remove("hidden");
-          menu.classList.add("inline-flex");
-        } else {
-          menu.classList.add("hidden");
-          menu.classList.remove("inline-flex");
-        }
-      });
-    }
+  function initializeThoughtCardActions(): void {
+    thoughtCards = document.querySelectorAll<HTMLElement>("[data-thought-card]");
+    thoughtCards.forEach((cardEl) => {
+      const shareToggle = cardEl.querySelector<HTMLButtonElement>(".thought-share-toggle");
+      if (shareToggle) {
+        shareToggle.addEventListener("click", () => {
+          const menu = cardEl.querySelector<HTMLElement>("[data-share-menu]");
+          if (!menu) return;
+          const opening = menu.classList.contains("hidden");
+          closeShareMenus(cardEl);
+          if (opening) {
+            menu.classList.remove("hidden");
+            menu.classList.add("inline-flex");
+          } else {
+            menu.classList.add("hidden");
+            menu.classList.remove("inline-flex");
+          }
+        });
+      }
 
-    const actions = cardEl.querySelectorAll<HTMLButtonElement>(".thought-action");
-    actions.forEach((button) => {
-      button.addEventListener("click", async () => {
-        const action = button.dataset.action;
-        if (!action) return;
-        button.disabled = true;
-        try {
-          await handleCardAction(cardEl, action);
-        } catch {
-          setStatus(cardEl, "Share_Failed_Try_Again");
-        } finally {
-          button.disabled = false;
-        }
+      const actions = cardEl.querySelectorAll<HTMLButtonElement>(".thought-action");
+      actions.forEach((button) => {
+        button.addEventListener("click", async () => {
+          const action = button.dataset.action;
+          if (!action) return;
+          button.disabled = true;
+          try {
+            await handleCardAction(cardEl, action);
+          } catch {
+            setStatus(cardEl, "Share_Failed_Try_Again");
+          } finally {
+            button.disabled = false;
+          }
+        });
       });
     });
-  });
+  }
+
+  function renderThoughts(items: ThoughtItem[]): void {
+    const container = document.querySelector<HTMLElement>("#thoughts-list");
+    if (!container) return;
+    container.innerHTML = items.map((item, index) => thoughtCardMarkup(item, index)).join("");
+    initializeThoughtCardActions();
+  }
+
+  async function hydrateThoughts(): Promise<void> {
+    try {
+      const response = await fetch(THOUGHTS_URL, { cache: "no-store" });
+      if (!response.ok) return;
+      const data: unknown = await response.json();
+      if (!Array.isArray(data)) return;
+      const remoteThoughts = data.filter(isThoughtItem);
+      if (!remoteThoughts.length) return;
+      renderThoughts(remoteThoughts);
+    } catch {
+      // Keep local rendered content when remote fetch fails.
+    }
+  }
+
+  initializeThoughtCardActions();
+  hydrateThoughts();
 
   document.addEventListener("click", (event) => {
     const target = event.target as HTMLElement;
