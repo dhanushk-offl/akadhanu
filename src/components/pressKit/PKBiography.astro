@@ -35,7 +35,7 @@ import Title from "../ui/Title.astro";
       <div class="flex items-center justify-between mb-2">
         <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400">[01] Short Biography</span>
         <button 
-          class="copy-btn opacity-0 group-hover:opacity-100 transition-opacity font-mono text-xxxs uppercase tracking-widest text-emerald-600 dark:text-emerald-400 hover:underline"
+          class="bio-copy-btn opacity-0 group-hover:opacity-100 transition-opacity font-mono text-xxxs uppercase tracking-widest text-emerald-600 dark:text-emerald-400 hover:underline"
           data-target="short-bio-content"
         >
           Copy_Data
@@ -58,7 +58,7 @@ import Title from "../ui/Title.astro";
       <div class="flex items-center justify-between mb-2">
         <span class="font-mono text-xxs uppercase tracking-widest text-zinc-400">[02] Long Biography</span>
         <button 
-          class="copy-btn opacity-0 group-hover:opacity-100 transition-opacity font-mono text-xxxs uppercase tracking-widest text-emerald-600 dark:text-emerald-400 hover:underline"
+          class="bio-copy-btn opacity-0 group-hover:opacity-100 transition-opacity font-mono text-xxxs uppercase tracking-widest text-emerald-600 dark:text-emerald-400 hover:underline"
           data-target="long-bio-content"
         >
           Copy_Data
@@ -100,7 +100,7 @@ import Title from "../ui/Title.astro";
     const thirdPersonBtn = document.getElementById('third-person-btn');
     const firstPersonTexts = document.querySelectorAll('.first-person');
     const thirdPersonTexts = document.querySelectorAll('.third-person');
-    const copyBtns = document.querySelectorAll('.copy-btn');
+    const copyBtns = document.querySelectorAll('.bio-copy-btn');
     
     // Load persisted view or default to 'first'
     let currentView = localStorage.getItem('bio-perspective') || 'first';
@@ -136,8 +136,12 @@ import Title from "../ui/Title.astro";
     thirdPersonBtn?.addEventListener('click', () => toggleView('third'));
 
     copyBtns.forEach(btn => {
-      btn.addEventListener('click', async () => {
-        const targetId = btn.getAttribute('data-target');
+      // Clone to remove any stale listeners
+      const newBtn = btn.cloneNode(true);
+      btn.parentNode.replaceChild(newBtn, btn);
+
+      newBtn.addEventListener('click', async () => {
+        const targetId = newBtn.getAttribute('data-target');
         const container = document.getElementById(targetId);
         const textToCopy = container.querySelector(`.${currentView}-person`).innerText;
         
@@ -147,7 +151,18 @@ import Title from "../ui/Title.astro";
             window.showToast('COPIED_TO_CLIPBOARD');
           }
         } catch (err) {
-          console.error('Failed to copy: ', err);
+          // Fallback for non-HTTPS or older browsers
+          const textarea = document.createElement('textarea');
+          textarea.value = textToCopy;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+          if (window.showToast) {
+            window.showToast('COPIED_TO_CLIPBOARD');
+          }
         }
       });
     });

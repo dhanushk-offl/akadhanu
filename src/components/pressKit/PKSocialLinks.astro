@@ -1,19 +1,17 @@
 ---
 import { 
-  TwitterLogo, 
+  XLogo, 
   LinkedinLogo, 
   InstagramLogo, 
-  ThreadsLogo, 
-  FacebookLogo,
   GithubLogo,
   Copy
 } from "@phosphor-icons/react";
 
 const LINKS = [
   {
-    name: "Twitter",
+    name: "X",
     url: "https://x.com/akadhanu",
-    icon: TwitterLogo,
+    icon: XLogo,
     handle: "@akadhanu"
   },
   {
@@ -65,7 +63,7 @@ const LINKS = [
             </div>
 
             <button 
-              class="copy-btn absolute top-2 right-2 p-1.5 rounded-md opacity-0 group-hover:opacity-100 bg-white dark:bg-zinc-800 shadow-sm border border-zinc-200 dark:border-zinc-700 hover:text-emerald-600 transition-all duration-200"
+              class="social-copy-btn absolute top-2 right-2 p-1.5 rounded-md opacity-0 group-hover:opacity-100 bg-white dark:bg-zinc-800 shadow-sm border border-zinc-200 dark:border-zinc-700 hover:text-emerald-600 transition-all duration-200"
               data-url={link.url}
               title="Copy URL"
             >
@@ -80,18 +78,35 @@ const LINKS = [
 
 <script is:inline>
   function setupSocialCopy() {
-    const copyButtons = document.querySelectorAll('.copy-btn');
+    const copyButtons = document.querySelectorAll('.social-copy-btn');
     
     copyButtons.forEach(button => {
-      button.addEventListener('click', async function(e) {
+      // Remove existing listeners by cloning
+      const newBtn = button.cloneNode(true);
+      button.parentNode.replaceChild(newBtn, button);
+      
+      newBtn.addEventListener('click', async function(e) {
         e.preventDefault();
         const url = this.getAttribute('data-url');
         
         try {
           await navigator.clipboard.writeText(url);
-          (window as any).showToast(`LINK_COPIED: ${url.replace('https://', '')}`);
+          if (window.showToast) {
+            window.showToast('URL_COPIED: ' + url.replace('https://', ''));
+          }
         } catch (err) {
-          console.error('Failed to copy', err);
+          // Fallback for non-HTTPS or older browsers
+          const textarea = document.createElement('textarea');
+          textarea.value = url;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+          if (window.showToast) {
+            window.showToast('URL_COPIED: ' + url.replace('https://', ''));
+          }
         }
       });
     });
