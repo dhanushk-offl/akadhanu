@@ -103,34 +103,44 @@ async function fetchMediumFeed(feedUrl: string): Promise<MediumFeedItem[]> {
   });
 }
 
-function errorResponse(message: string, status: number = 500): Response {
-  return new Response(JSON.stringify({ error: message }), {
-    status,
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    },
-  });
+function errorResponse(message: string, status: number = 500, origin?: string): Response {
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
+  if (origin) headers["Access-Control-Allow-Origin"] = origin;
+  return new Response(JSON.stringify({ error: message }), { status, headers });
 }
 
-function jsonResponse(data: unknown): Response {
-  return new Response(JSON.stringify(data), {
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "Cache-Control": "public, max-age=600",
-    },
-  });
+function jsonResponse(data: unknown, origin?: string): Response {
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    "Cache-Control": "public, max-age=600",
+  };
+  if (origin) headers["Access-Control-Allow-Origin"] = origin;
+  return new Response(JSON.stringify(data), { headers });
 }
 
 export default {
-  async fetch(request: Request, env: { MEDIUM_FEED_URL?: string }): Promise<Response> {
+  async fetch(request: Request, env: { MEDIUM_FEED_URL?: string; ALLOWED_ORIGIN?: string }): Promise<Response> {
     const feedUrl = env.MEDIUM_FEED_URL || "https://medium.com/feed/@itzmedhanu";
+    const allowedOrigins = (env.ALLOWED_ORIGIN || "https://dhanu.letretro.com")
+      .split(",")
+      .map((s) => s.trim().replace(/\/+$/, ""));
+
+    const origin = request.headers.get("Origin");
+    const originMatch = origin ? allowedOrigins.includes(origin.replace(/\/+$/, "")) : false;
+    if (origin && !originMatch) {
+      return new Response(JSON.stringify({ error: "Forbidden" }), {
+        status: 403,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+    const corsOrigin = originMatch ? origin : allowedOrigins[0];
 
     if (request.method === "OPTIONS") {
       return new Response(null, {
         headers: {
-          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Origin": corsOrigin,
           "Access-Control-Allow-Methods": "GET, OPTIONS",
           "Access-Control-Allow-Headers": "Content-Type",
         },
@@ -145,7 +155,7 @@ export default {
 
       // GET /api/blog — return all posts
       if (pathname === "/api/blog") {
-        return jsonResponse(posts);
+        return jsonResponse(posts, corsOrigin);
       }
 
       // GET /api/blog/:slug — return single post
@@ -154,15 +164,15 @@ export default {
         const slug = singleMatch[1];
         const post = posts.find((p) => slugify(p.title) === slug);
         if (!post) {
-          return errorResponse("Post not found", 404);
+          return errorResponse("Post not found", 404, corsOrigin);
         }
-        return jsonResponse(post);
+        return jsonResponse(post, corsOrigin);
       }
 
-      return errorResponse("Not found", 404);
+      return errorResponse("Not found", 404, corsOrigin);
     } catch (err) {
       console.error("Failed to fetch Medium feed:", err);
-      return errorResponse("Failed to fetch blog posts");
+      return errorResponse("Failed to fetch blog posts", 500, corsOrigin);
     }
   },
 };
