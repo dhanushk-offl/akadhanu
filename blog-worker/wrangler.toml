@@ -4,3 +4,7 @@ compatibility_date = "2025-04-01"
 
 [vars]
 MEDIUM_FEED_URL = "https://medium.com/feed/@itzmedhanu"
+
+[observability.logs]
+enabled = false
+invocation_logs = true
