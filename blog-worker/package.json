@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "wrangler dev src/index.ts",
-    "deploy": "wrangler deploy src/index.ts"
+    "deploy": "wrangler deploy src/index.ts",
+    "build": "echo 'Worker: no build needed — handled by wrangler deploy'"
   },
   "dependencies": {
     "rss-parser": "^3.13.0",
