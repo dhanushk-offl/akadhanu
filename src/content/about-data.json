@@ -59,8 +59,15 @@
     ],
     "milestones": [
         {
+            "title": "Winner - FossHack 2026",
+            "period": "2026",
+            "url": "https://fossunited.org/fosshack/2026",
+            "description": "Won the FossHack 2026 open source hackathon by building hallx — a lightweight, model-agnostic hallucination risk engine for LLM outputs."
+        },
+        {
             "title": "Winner - Smart India Hackathon 2025 (Software Edition)",
             "period": "2025",
+            "url": "https://sih.gov.in/sih2025",
             "description": "Won the Smart India Hackathon 2025 (Software Edition) for building an AI Powered Safety Routing Application for Womens in Metropolitian Cities."
         },
         {

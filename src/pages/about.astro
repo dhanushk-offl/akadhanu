@@ -113,12 +113,14 @@ const { experience, education, focus, milestones } = aboutData;
       <div class="space-y-6">
         {milestones.map((item) => (
           <div class="flex flex-col sm:flex-row sm:items-start border-l border-zinc-900 pl-6 space-y-2 sm:space-y-0">
-             <div class="flex-grow space-y-1">
-                <h3 class="font-medium text-zinc-100">{item.title}</h3>
-                <p class="text-sm text-zinc-400 leading-relaxed font-mono line-clamp-2">
-                  {item.description}
-                </p>
-             </div>
+              <div class="flex-grow space-y-1">
+                 <h3 class="font-medium text-zinc-100">
+                   {item.url ? <a href={item.url} target="_blank" rel="noopener noreferrer" class="hover:text-emerald-500 transition-colors !no-underline">{item.title} ↗</a> : item.title}
+                 </h3>
+                 <p class="text-sm text-zinc-400 leading-relaxed font-mono line-clamp-2">
+                   {item.description}
+                 </p>
+              </div>
              <div class="sm:ml-4 flex-shrink-0">
                 <span class="font-mono text-[10px] text-zinc-500 uppercase tabular-nums">
                   {item.period}
@@ -128,7 +130,5 @@ const { experience, education, focus, milestones } = aboutData;
         ))}
       </div>
     </section>
-  </div>
-</Main>
   </div>
 </Main>
