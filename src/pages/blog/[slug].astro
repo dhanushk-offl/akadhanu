@@ -4,7 +4,7 @@ import { AppConfig } from "../../config/AppConfig";
 import BlogPostDynamic from "../../components/blog/BlogPostDynamic.tsx";
 
 export async function getStaticPaths() {
-  const workerUrl = import.meta.env.PUBLIC_MEDIUM_WORKER_URL;
+  const workerUrl = (import.meta.env.PUBLIC_MEDIUM_WORKER_URL || "").replace(/\/+$/, "");
   if (!workerUrl) {
     console.error("PUBLIC_MEDIUM_WORKER_URL is not set — no blog pages generated");
     return [];

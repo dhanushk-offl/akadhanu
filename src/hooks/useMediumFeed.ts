@@ -49,7 +49,7 @@ export function useMediumFeed() {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    const workerUrl = import.meta.env.PUBLIC_MEDIUM_WORKER_URL;
+    const workerUrl = (import.meta.env.PUBLIC_MEDIUM_WORKER_URL || "").replace(/\/+$/, "");
     if (!workerUrl) {
       console.error("PUBLIC_MEDIUM_WORKER_URL is not set");
       setError(true);
