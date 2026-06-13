@@ -1,4 +1,4 @@
-import Parser from "rss-parser";
+import { XMLParser } from "fast-xml-parser";
 import sanitizeHtml from "sanitize-html";
 
 interface MediumFeedItem {
@@ -12,8 +12,6 @@ interface MediumFeedItem {
   ogImage: string | null;
 }
 
-const parser = new Parser();
-
 function slugify(title: string): string {
   return title
     .toLowerCase()
@@ -25,6 +23,10 @@ function slugify(title: string): string {
 function extractOgImage(content: string): string | null {
   const match = content.match(/<img[^>]+src="([^">]+)"/);
   return match ? match[1] : null;
+}
+
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]*>/g, "").replace(/\s+/g, " ").trim();
 }
 
 const sanitizeOptions: sanitizeHtml.IOptions = {
@@ -56,22 +58,46 @@ const sanitizeOptions: sanitizeHtml.IOptions = {
   },
 };
 
-async function fetchMediumFeed(feedUrl: string): Promise<MediumFeedItem[]> {
-  const feed = await parser.parseURL(feedUrl);
+const xmlParser = new XMLParser({
+  ignoreAttributes: false,
+  attributeNamePrefix: "@_",
+  textNodeName: "#text",
+  isArray: (name) => name === "item" || name === "category",
+});
 
-  return feed.items.map((item) => {
-    const rawContent = item["content:encoded"] || item.content || "";
+async function fetchMediumFeed(feedUrl: string): Promise<MediumFeedItem[]> {
+  const res = await fetch(feedUrl);
+  const xml = await res.text();
+  const parsed = xmlParser.parse(xml);
+
+  const items = parsed?.rss?.channel?.item || [];
+
+  return items.map((item: Record<string, unknown>) => {
+    const rawContent: string = item["content:encoded"] || item["content"] || "";
     const ogImage = extractOgImage(rawContent);
     const sanitized = sanitizeHtml(rawContent, sanitizeOptions);
+    const title = item["title"] || "";
+    const categories: string[] = item["category"]
+      ? (Array.isArray(item["category"]) ? item["category"] : [item["category"]])
+      : [];
+
+    let author = "";
+    if (item["dc:creator"]) {
+      author = typeof item["dc:creator"] === "object"
+        ? (item["dc:creator"] as Record<string, unknown>)["#text"] || ""
+        : String(item["dc:creator"]);
+    }
+
+    const plainText = stripHtml(rawContent);
 
     return {
-      title: item.title || "",
-      link: item.link || "",
-      pubDate: item.pubDate || "",
+      title: String(title),
+      link: String(item["link"] || ""),
+      pubDate: String(item["pubDate"] || ""),
       content: sanitized,
-      contentSnippet: item.contentSnippet?.slice(0, 300) || "",
-      categories: item.categories || [],
-      author: item.creator || item.author || "Dhanush Kandhan",
+      contentSnippet: plainText.slice(0, 300),
+      categories,
+      author: author || "Dhanush Kandhan",
       ogImage,
     };
   });
