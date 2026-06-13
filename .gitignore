@@ -17,6 +17,11 @@ pnpm-debug.log*
 .env
 .env.production
 
+# cloudflare worker
+blog-worker/.dev.vars
+blog-worker/node_modules/
+blog-worker/dist/
+
 # macOS-specific files
 .DS_Store
 

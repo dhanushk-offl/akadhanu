@@ -1,36 +1,27 @@
 ---
-import Parser from "rss-parser";
 import Main from "../../layouts/Main.astro";
 import { AppConfig } from "../../config/AppConfig";
 import BlogPostDynamic from "../../components/blog/BlogPostDynamic.tsx";
 
-const parser = new Parser();
-let slugs: string[] = [];
-
-try {
-  const feed = await parser.parseURL("https://medium.com/feed/@itzmedhanu");
-  slugs = feed.items.map((item) => {
-    return (item.title || "")
-      .toLowerCase()
-      .replace(/[^\w\s-]/g, "")
-      .replace(/[\s_-]+/g, "-")
-      .replace(/^-+|-+$/g, "");
-  });
-} catch (e) {
-  console.error("Failed to fetch Medium feed for static paths", e);
-}
-
 export async function getStaticPaths() {
-  const parser = new Parser();
-  let feed;
-  try {
-    feed = await parser.parseURL("https://medium.com/feed/@itzmedhanu");
-  } catch (e) {
+  const workerUrl = import.meta.env.PUBLIC_MEDIUM_WORKER_URL;
+  if (!workerUrl) {
+    console.error("PUBLIC_MEDIUM_WORKER_URL is not set — no blog pages generated");
     return [];
   }
 
-  return feed.items.map((item) => {
-    const slug = (item.title || "")
+  let posts;
+  try {
+    const res = await fetch(`${workerUrl}/api/blog`);
+    if (!res.ok) throw new Error(`Worker returned ${res.status}`);
+    posts = await res.json();
+  } catch (e) {
+    console.error("Failed to fetch blog posts from worker", e);
+    return [];
+  }
+
+  return posts.map((post: { title: string; pubDate: string; link: string; ogImage: string | null }) => {
+    const slug = (post.title || "")
       .toLowerCase()
       .replace(/[^\w\s-]/g, "")
       .replace(/[\s_-]+/g, "-")
@@ -39,13 +30,10 @@ export async function getStaticPaths() {
     return {
       params: { slug },
       props: {
-        title: item.title || "",
-        pubDate: item.pubDate || "",
-        link: item.link || "",
-        ogImage:
-          (item["content:encoded"] || item.content || "").match(
-            /<img[^>]+src="([^">]+)"/
-          )?.[1] || "/assets/og-images/blog.png",
+        title: post.title || "",
+        pubDate: post.pubDate || "",
+        link: post.link || "",
+        ogImage: post.ogImage || "/assets/og-images/blog.png",
       },
     };
   });

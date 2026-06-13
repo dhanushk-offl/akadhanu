@@ -1,15 +1,5 @@
-import { useState, useEffect } from "react";
 import { format } from "date-fns";
-
-interface MediumPost {
-  title: string;
-  link: string;
-  pubDate: string;
-  content: string;
-  contentSnippet: string;
-  categories: string[];
-  author: string;
-}
+import { useMediumFeed } from "../../hooks/useMediumFeed";
 
 function slugify(title: string): string {
   return title
@@ -29,62 +19,18 @@ function formatDateLong(dateStr: string): string {
   }
 }
 
-function formatDateShort(dateStr: string): string {
-  try {
-    const d = new Date(dateStr);
-    if (isNaN(d.getTime())) return "N/A";
-    return format(d, "yyyy-MM-dd");
-  } catch {
-    return "N/A";
-  }
-}
-
 function extractOgImage(html: string): string | null {
   const match = html?.match(/<img[^>]+src="([^">]+)"/);
   return match ? match[1] : null;
 }
 
 export default function BlogPostDynamic({ slug }: { slug: string }) {
-  const [post, setPost] = useState<MediumPost | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const { posts, loading, error: fetchError } = useMediumFeed();
 
-  useEffect(() => {
-    async function fetchPost() {
-      try {
-        const res = await fetch(
-          "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@itzmedhanu"
-        );
-        const data = await res.json();
-        if (data.status === "ok" && data.items) {
-          const found = data.items.find(
-            (item: any) => slugify(item.title) === slug
-          );
-          if (found) {
-            setPost({
-              title: found.title || "",
-              link: found.link || "",
-              pubDate: found.pubDate || "",
-              content: found.content || found["content:encoded"] || "",
-              contentSnippet: found.contentSnippet || "",
-              categories: found.categories || [],
-              author: found.author || "Dhanush Kandhan",
-            });
-          } else {
-            setError(true);
-          }
-        } else {
-          setError(true);
-        }
-      } catch {
-        console.error("Medium feed fetch failed");
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchPost();
-  }, [slug]);
+  const post = !loading && !fetchError
+    ? posts.find((p) => slugify(p.title) === slug) || null
+    : null;
+  const error = fetchError || (!loading && !post);
 
   if (loading) {
     return (

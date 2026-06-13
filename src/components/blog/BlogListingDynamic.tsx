@@ -1,12 +1,4 @@
-import { useState, useEffect } from "react";
-
-interface MediumPost {
-  title: string;
-  link: string;
-  pubDate: string;
-  contentSnippet: string;
-  categories: string[];
-}
+import { useMediumFeed } from "../../hooks/useMediumFeed";
 
 function formatDate(dateStr: string): string {
   try {
@@ -35,43 +27,7 @@ function slugify(title: string): string {
 }
 
 export default function BlogListingDynamic() {
-  const [posts, setPosts] = useState<MediumPost[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    async function fetchPosts() {
-      try {
-        const res = await fetch(
-          "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@itzmedhanu"
-        );
-        const data = await res.json();
-        if (data.status === "ok" && data.items) {
-          const sorted = data.items
-            .sort(
-              (a: MediumPost, b: MediumPost) =>
-                new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime()
-            )
-            .map((item: any) => ({
-              title: item.title || "",
-              link: item.link || "",
-              pubDate: item.pubDate || "",
-              contentSnippet: item.contentSnippet || "",
-              categories: item.categories || [],
-            }));
-          setPosts(sorted);
-        } else {
-          setError(true);
-        }
-      } catch {
-        console.error("Medium feed fetch failed");
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchPosts();
-  }, []);
+  const { posts, loading, error } = useMediumFeed();
 
   if (loading) {
     return (

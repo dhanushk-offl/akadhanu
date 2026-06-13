@@ -1,11 +1,4 @@
-import { useState, useEffect } from "react";
-
-interface MediumPost {
-  title: string;
-  link: string;
-  pubDate: string;
-  categories: string[];
-}
+import { useMediumFeed } from "../../hooks/useMediumFeed";
 
 function formatDate(dateStr: string): string {
   try {
@@ -33,43 +26,7 @@ function slugify(title: string): string {
 }
 
 export default function HomePageBlogSectionDynamic() {
-  const [posts, setPosts] = useState<MediumPost[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    async function fetchPosts() {
-      try {
-        const res = await fetch(
-          "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@itzmedhanu"
-        );
-        const data = await res.json();
-        if (data.status === "ok" && data.items) {
-          const sorted = data.items
-            .sort(
-              (a: MediumPost, b: MediumPost) =>
-                new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime()
-            )
-            .slice(0, 5)
-            .map((item: any) => ({
-              title: item.title || "",
-              link: item.link || "",
-              pubDate: item.pubDate || "",
-              categories: item.categories || [],
-            }));
-          setPosts(sorted);
-        } else {
-          setError(true);
-        }
-      } catch {
-        console.error("Medium feed fetch failed");
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchPosts();
-  }, []);
+  const { posts, loading, error } = useMediumFeed();
 
   if (loading) {
     return (
@@ -111,7 +68,7 @@ export default function HomePageBlogSectionDynamic() {
 
   return (
     <div className="flex flex-col gap-1">
-      {posts.map((post, index) => (
+      {posts.slice(0, 5).map((post, index) => (
         <a
           key={post.link}
           href={`/blog/${slugify(post.title)}`}
