@@ -3,6 +3,9 @@ import PageHeader from "../components/PageHeader.astro";
 import { AppConfig } from "../config/AppConfig";
 import Main from "../layouts/Main.astro";
 import localThoughts from "../content/thoughts.json";
+const sortedThoughts = [...localThoughts].sort(
+  (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+);
 const formatThoughtDate = (value: string): string => {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return value;
@@ -28,7 +31,7 @@ const formatThoughtDate = (value: string): string => {
     />
 
     <div id="thoughts-list" class="mt-12 space-y-12">
-      {localThoughts.map((item, index) => (
+      {sortedThoughts.map((item, index) => (
         <div
           class="group relative space-y-4 p-6 -mx-6 rounded-xl hover:bg-zinc-900/50 border border-transparent hover:border-zinc-800 transition-all duration-300"
           data-thought-card
@@ -524,6 +527,9 @@ const formatThoughtDate = (value: string): string => {
       if (!Array.isArray(data)) return;
       const remoteThoughts = data.filter(isThoughtItem);
       if (!remoteThoughts.length) return;
+      remoteThoughts.sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
       renderThoughts(remoteThoughts);
     } catch {
       // Keep local rendered content when remote fetch fails.
