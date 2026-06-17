@@ -1,27 +1,27 @@
 {
     "overview": [
-        "I am Dhanush Kandhan aka Dhanu from Bengaluru, India. I am an AI engineer, developer, and technologist focused on AI, ethics, GPUs, and emerging systems, while contributing to tech communities and education initiatives. And I love building things & Hosting a Tamil Tech Podcast Idu Namma Tech-u"
+        "I am Dhanush Kandhan aka Dhanu from Bengaluru, India. I am an AI engineer, developer, and technologist focused on AI, LLMs, end-to-end Software Development, AI Agents, GPUsand emerging systems, while contributing to tech communities and education initiatives. And I love building things & Hosting a Tamil Tech Podcast Idu Namma Tech-u"
     ],
     "interests": [
         {
-            "title": "Agent Dev",
-            "description": "Exploring LLM orchestration and autonomous agentic workflows to build intelligent tools.",
+            "title": "AI & LLMs",
+            "description": "Exploring LLM orchestration, fine-tuning and autonomous agentic workflows to build intelligent tools.",
             "color": "emerald"
         },
         {
-            "title": "Podcast",
-            "description": "Hosting Idunammatechu Tamil podcast, connecting experts and builders through conversations on technology, culture, and ideas.",
-            "color": "cyan"
+            "title": "SaaS & Open Source",
+            "description": "Building end-to-end fullstack SaaS products and contributing to open source projects, fostering innovation and collaboration in the tech community.",
+            "color": "indigo"
         },
-        {
+                {
             "title": "IoT",
             "description": "Exploring IoT systems like ESP32, Jetson Nano, Raspberry Pi, Arduino, and custom PCB designs for custom experiments.",
             "color": "amber"
         },
         {
-            "title": "Open Source & SaaS",
-            "description": "Contributing to open source projects and building tools & SaaS products for the community & market as well.",
-            "color": "indigo"
+            "title": "Podcast",
+            "description": "Hosting Idunammatechu Tamil podcast, connecting experts and builders through conversations on technology, culture, and ideas.",
+            "color": "cyan"
         },
         {
             "title": "Art",
