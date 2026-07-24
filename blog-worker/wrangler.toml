@@ -4,7 +4,7 @@ compatibility_date = "2025-04-01"
 
 [vars]
 MEDIUM_FEED_URL = "https://medium.com/feed/@itzmedhanu"
-ALLOWED_ORIGIN = "https://dhanu.letretro.com, https://akadhanu.pages.dev"
+ALLOWED_ORIGIN = "https://dhanu.letretro.com, https://akadhanu.pages.dev, http://localhost:4321, http://localhost"
 
 [observability.logs]
 enabled = false
